@@ -35,10 +35,6 @@ const ORION_CATALOG: { name: string; ra: number; dec: number; mag: number }[] = 
   { name: 'Pi4 Ori', ra: 4.858, dec: 5.605, mag: 3.69 },
   { name: 'Pi5 Ori', ra: 4.91, dec: 2.441, mag: 3.72 },
   { name: 'Pi6 Ori', ra: 4.976, dec: 1.714, mag: 4.47 },
-  // Sword
-  { name: '42 Ori', ra: 5.588, dec: -4.838, mag: 4.59 },
-  { name: 'Theta1 Ori', ra: 5.588, dec: -5.39, mag: 6.73 },
-  { name: 'Iota Ori', ra: 5.591, dec: -5.91, mag: 2.77 },
   // Knee — links the belt down to Rigel
   { name: 'Eta Ori', ra: 5.408, dec: -2.397, mag: 3.36 },
 ]
@@ -75,15 +71,14 @@ const ORION_LINES: [number, number][] = [
   [4, 5], // Alnilam — Mintaka
   // Legs
   [3, 6], // Alnitak — Saiph
-  [5, 22], // Mintaka — Eta
-  [22, 7], // Eta — Rigel
-  // Raised arm + club (forks at Mu, closes at the top)
+  [5, 19], // Mintaka — Eta
+  [19, 7], // Eta — Rigel
+  // Raised arm + club (forks at Mu into two open prongs — no top connection)
   [0, 8], // Betelgeuse — Mu
   [8, 9], // Mu — Nu
   [8, 10], // Mu — Xi
   [9, 11], // Nu — Chi1
   [10, 12], // Xi — Chi2
-  [11, 12], // Chi1 — Chi2
   // Shield arm + shield arc
   [2, 15], // Bellatrix — Pi3
   [13, 14], // Pi1 — Pi2
@@ -91,10 +86,6 @@ const ORION_LINES: [number, number][] = [
   [15, 16], // Pi3 — Pi4
   [16, 17], // Pi4 — Pi5
   [17, 18], // Pi5 — Pi6
-  // Sword hanging from the belt
-  [4, 19], // Alnilam — 42 Ori
-  [19, 20], // 42 Ori — Theta1 (Trapezium)
-  [20, 21], // Theta1 — Iota
 ]
 
 
@@ -504,40 +495,25 @@ export function initHero() {
   }
   window.addEventListener('resize', onResize)
 
-  // --- Render loop — pauses when the hero is off-screen or tab is hidden ---
-  let visible = true
+  // --- Render loop — always on (the canvas is a fixed full-page backdrop);
+  // only pauses when the tab itself is hidden ---
   let rafId = 0
   let lastT = 0
   const FORMATION_DURATION = 3.2
   let lineTargetOpacity = 0
 
-  const heroSection = canvas.closest('section')
-  if (heroSection) {
-    new IntersectionObserver(
-      ([entry]) => {
-        const wasVisible = visible
-        visible = entry.isIntersecting
-        if (visible && !wasVisible) {
-          lastT = 0 // swallow the pause so uTime doesn't jump
-          animate()
-        }
-      },
-      { threshold: 0 }
-    ).observe(heroSection)
-  }
-
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
       cancelAnimationFrame(rafId)
-    } else if (visible) {
-      lastT = 0
+    } else {
+      lastT = 0 // swallow the pause so uTime doesn't jump
       animate()
     }
   })
 
   function animate() {
     cancelAnimationFrame(rafId)
-    if (!visible || document.hidden) return
+    if (document.hidden) return
     rafId = requestAnimationFrame(animate)
 
     const now = performance.now()

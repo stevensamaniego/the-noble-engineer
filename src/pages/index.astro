@@ -3,10 +3,14 @@ import Layout from '../layouts/Layout.astro'
 ---
 
 <Layout>
-  <!-- Hero — Three.js Orion constellation scene with the 3D logo emblem
-       floating in front of it (both render on hero-canvas; see hero.ts) -->
+  <!-- Fixed full-viewport backdrop — the Three.js Orion constellation scene
+       with the 3D logo emblem (see hero.ts). It stays pinned while the page
+       scrolls over it; sections below use semi-transparent backgrounds so the
+       starfield stays alive behind all content. -->
+  <canvas id="hero-canvas" class="fixed top-0 left-0 w-screen h-screen z-0" role="img" aria-label="The Noble Engineer — tree emblem floating before the Orion constellation"></canvas>
+
+  <!-- Hero — transparent, the constellation shows through fully -->
   <section id="hero" class="relative h-screen flex items-center justify-center overflow-hidden">
-    <canvas id="hero-canvas" class="absolute inset-0 w-full h-full" role="img" aria-label="The Noble Engineer — tree emblem floating before the Orion constellation"></canvas>
     <h1 class="sr-only">The Noble Engineer</h1>
     <div class="relative z-10 flex flex-col items-center text-center px-6">
       <p class="text-accent font-mono text-sm tracking-[0.3em] uppercase opacity-0" data-hero-reveal="eyebrow">Engineering the Future</p>
@@ -23,12 +27,12 @@ import Layout from '../layouts/Layout.astro'
     </div>
   </section>
 
-  <!-- Curiosity gap — first line peeks above the fold edge (negative margin pulls
-       it into the last ~1.5rem of the hero viewport, below the scroll hint), the
-       resolution only reveals on scroll. Zeigarnik Effect: open loop → must scroll. -->
-  <section class="relative z-10 -mt-6 px-6 pb-32 md:pb-44" aria-label="Why engineering matters">
+  <!-- Curiosity gap — hidden at load; the opening line fades up as the user
+       begins to scroll, the resolution reveals a beat later. Zeigarnik Effect:
+       open loop → must scroll. -->
+  <section class="relative z-10 -mt-6 px-6 pb-32 md:pb-44 bg-void/85" aria-label="Why engineering matters">
     <div class="max-w-6xl mx-auto">
-      <p class="text-[clamp(2rem,5vw,4rem)] font-extrabold tracking-tight leading-[1.12] text-text">
+      <p class="text-[clamp(2rem,5vw,4rem)] font-extrabold tracking-tight leading-[1.12] text-text opacity-0" data-animate="fade-up">
         Most companies don't have a technology problem—
       </p>
       <p class="text-[clamp(2rem,5vw,4rem)] font-extrabold tracking-tight leading-[1.12] text-accent mt-8 md:mt-12" data-animate="fade-up">
@@ -39,7 +43,7 @@ import Layout from '../layouts/Layout.astro'
 
   <!-- Problem space — the pain before the cure. Loss aversion + pattern
        recognition: the visitor sees their own history reflected back. -->
-  <section id="problem" class="relative px-6 py-28 md:py-40 overflow-hidden">
+  <section id="problem" class="relative px-6 py-28 md:py-40 overflow-hidden bg-void/90">
     <div class="max-w-7xl mx-auto">
       <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-14 md:mb-20 opacity-0" data-split>
         You've been here before.
@@ -56,7 +60,7 @@ import Layout from '../layouts/Layout.astro'
   </section>
 
   <!-- Services — editorial intro -->
-  <section id="services" class="relative pt-36 md:pt-48 pb-20 px-6 overflow-hidden">
+  <section id="services" class="relative pt-36 md:pt-48 pb-20 px-6 overflow-hidden bg-void/90">
     <div class="pointer-events-none absolute -right-40 top-24 w-[500px] h-[500px] rounded-full bg-accent/[0.03] blur-3xl" data-parallax="0.25"></div>
     <div class="max-w-7xl mx-auto">
       <p class="font-mono text-xs tracking-[0.3em] uppercase text-text-muted mb-6" data-animate="fade-up">01 — 04 &nbsp;/&nbsp; Services</p>
@@ -72,7 +76,7 @@ import Layout from '../layouts/Layout.astro'
   </section>
 
   <!-- 01 — Custom Software -->
-  <section class="relative px-6 py-28 md:py-40 overflow-hidden">
+  <section class="relative px-6 py-28 md:py-40 overflow-hidden bg-void/90">
     <span class="service-index left-2 md:left-6" data-parallax="0.12" aria-hidden="true">01</span>
     <svg class="service-accent hidden md:block right-[8%] top-[14%] w-56" viewBox="0 0 200 160" fill="none" stroke-width="1" data-draw aria-hidden="true">
       <polyline points="14,128 58,74 104,96 152,30 186,52" />
@@ -103,7 +107,7 @@ import Layout from '../layouts/Layout.astro'
   </section>
 
   <!-- 02 — Infrastructure (pattern interrupt: centered, single column, air) -->
-  <section class="relative px-6 py-32 md:py-48 overflow-hidden">
+  <section class="relative px-6 py-32 md:py-48 overflow-hidden bg-void/90">
     <span class="service-index right-2 md:right-6" data-parallax="0.12" aria-hidden="true">02</span>
     <div class="max-w-3xl mx-auto text-center relative pt-16 md:pt-24">
       <p class="font-mono text-xs tracking-[0.3em] uppercase text-text-muted mb-5" data-animate="fade-up">Infrastructure</p>
@@ -118,7 +122,7 @@ import Layout from '../layouts/Layout.astro'
   </section>
 
   <!-- 03 — System Integration -->
-  <section class="relative px-6 py-28 md:py-40 overflow-hidden">
+  <section class="relative px-6 py-28 md:py-40 overflow-hidden bg-void/90">
     <span class="service-index left-2 md:left-6" data-parallax="0.12" aria-hidden="true">03</span>
     <!-- Two systems, one animated bridge — CSS only -->
     <div class="service-bridge hidden md:flex right-[6%] top-[22%] w-72" data-animate="fade-up" aria-hidden="true">
@@ -149,7 +153,7 @@ import Layout from '../layouts/Layout.astro'
   </section>
 
   <!-- 04 — IT Strategy (mirrored) -->
-  <section class="relative px-6 py-28 md:py-40 overflow-hidden">
+  <section class="relative px-6 py-28 md:py-40 overflow-hidden bg-void/90">
     <span class="service-index right-2 md:right-6" data-parallax="0.12" aria-hidden="true">04</span>
     <svg class="service-accent hidden md:block left-[8%] top-[16%] w-56" viewBox="0 0 200 160" fill="none" stroke-width="1" data-draw aria-hidden="true">
       <polyline points="16,140 60,100 90,116 130,58 168,74 184,24" />
@@ -179,7 +183,7 @@ import Layout from '../layouts/Layout.astro'
 
   <!-- Social proof — evidence, not claims. Serif italic voice, thin accent
        borders (one of the few sanctioned cyan moments on the page). -->
-  <section id="proof" class="relative py-32 md:py-44 px-6 overflow-hidden bg-surface">
+  <section id="proof" class="relative py-32 md:py-44 px-6 overflow-hidden bg-surface/90">
     <div class="max-w-7xl mx-auto">
       <p class="font-mono text-xs tracking-[0.3em] uppercase text-text-muted mb-16 md:mb-20" data-animate="fade-up">From the field</p>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-14 md:gap-10" data-animate-group data-stagger="0.15">
@@ -200,7 +204,7 @@ import Layout from '../layouts/Layout.astro'
   </section>
 
   <!-- About — full-width centered narrative -->
-  <section id="about" class="relative py-32 md:py-44 px-6 overflow-hidden">
+  <section id="about" class="relative py-32 md:py-44 px-6 overflow-hidden bg-void/90">
     <div class="pointer-events-none absolute -left-40 top-20 w-[450px] h-[450px] rounded-full bg-accent-secondary/[0.04] blur-3xl" data-parallax="0.15"></div>
     <div class="max-w-3xl mx-auto text-center">
       <p class="font-mono text-xs tracking-[0.3em] uppercase text-text-muted mb-5" data-animate="fade-up">About</p>
@@ -231,7 +235,7 @@ import Layout from '../layouts/Layout.astro'
   </section>
 
   <!-- Contact -->
-  <section id="contact" class="relative py-40 md:py-56 px-6 overflow-hidden">
+  <section id="contact" class="relative py-40 md:py-56 px-6 overflow-hidden bg-void/85">
     <div class="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden="true">
       <div class="contact-ring w-80 h-80"></div>
       <div class="contact-ring w-80 h-80" style="animation-delay: 2s"></div>
