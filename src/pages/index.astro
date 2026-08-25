@@ -23,108 +23,85 @@ import Layout from '../layouts/Layout.astro'
     </div>
   </section>
 
-  <!-- Work / Projects -->
+  <!-- What We Do -->
   <section id="work" class="relative py-32 px-6 overflow-hidden">
     <div class="pointer-events-none absolute -right-40 top-20 w-[500px] h-[500px] rounded-full bg-accent/[0.03] blur-3xl" data-parallax="0.25"></div>
     <div class="max-w-6xl mx-auto">
-      <p class="text-accent font-mono text-sm tracking-[0.3em] uppercase mb-2" data-animate="fade-up">Selected Work</p>
+      <p class="text-accent font-mono text-sm tracking-[0.3em] uppercase mb-2" data-animate="fade-up">What We Do</p>
       <h2 class="text-4xl md:text-5xl font-bold mb-16 opacity-0" data-split>Built to Perform</h2>
       <div class="grid md:grid-cols-2 gap-8" data-animate-group>
         <article class="tilt-card group relative bg-surface rounded-2xl border border-white/5 overflow-hidden" data-tilt>
           <div class="tilt-inner">
-            <div class="aspect-video relative overflow-hidden">
+            <div class="aspect-[3/2] relative overflow-hidden">
               <div class="absolute inset-0 preview-gradient preview-gradient-a"></div>
               <div class="absolute inset-0 preview-grid"></div>
-              <div class="absolute inset-0 flex items-center justify-center">
+              <div class="absolute inset-0 flex items-center justify-center px-6">
                 <div class="text-center">
-                  <span class="text-accent font-mono text-xs tracking-widest uppercase block mb-1">Enterprise Platform</span>
-                  <span class="text-text/60 font-mono text-[10px]">500+ users · multi-site</span>
+                  <span class="text-accent font-mono text-xs tracking-widest uppercase block mb-2">Custom Software</span>
+                  <span class="text-text/40 font-mono text-[10px] leading-relaxed block">web apps · mobile · APIs · integrations</span>
                 </div>
               </div>
             </div>
             <div class="p-6 relative">
-              <h3 class="text-xl font-semibold mb-2 group-hover:text-accent transition-colors duration-300">Workforce Management Platform</h3>
-              <p class="text-text-muted text-sm">Digital timesheet system for 500+ field employees across multiple sites. Multi-level approval workflows, HR system sync, MFA, PDF generation, and automated payroll export — replacing paper forms overnight.</p>
-              <div class="flex flex-wrap gap-2 mt-4">
-                <span class="text-xs font-mono px-2 py-1 bg-accent/10 text-accent rounded">Next.js</span>
-                <span class="text-xs font-mono px-2 py-1 bg-accent/10 text-accent rounded">Prisma</span>
-                <span class="text-xs font-mono px-2 py-1 bg-accent/10 text-accent rounded">PostgreSQL</span>
-                <span class="text-xs font-mono px-2 py-1 bg-accent/10 text-accent rounded">Vercel</span>
-              </div>
+              <h3 class="text-xl font-semibold mb-2 group-hover:text-accent transition-colors duration-300">Production Applications</h3>
+              <p class="text-text-muted text-sm">Full-stack web platforms, native mobile apps, and REST APIs — built for real users on real deadlines. From digital forms replacing paper workflows to compliance portals handling hundreds of employees, we ship production software that works the day it deploys.</p>
             </div>
           </div>
           <div class="tilt-glare" aria-hidden="true"></div>
         </article>
         <article class="tilt-card group relative bg-surface rounded-2xl border border-white/5 overflow-hidden" data-tilt>
           <div class="tilt-inner">
-            <div class="aspect-video relative overflow-hidden">
+            <div class="aspect-[3/2] relative overflow-hidden">
               <div class="absolute inset-0 preview-gradient preview-gradient-b"></div>
               <div class="absolute inset-0 preview-grid"></div>
-              <div class="absolute inset-0 flex items-center justify-center">
+              <div class="absolute inset-0 flex items-center justify-center px-6">
                 <div class="text-center">
-                  <span class="text-accent font-mono text-xs tracking-widest uppercase block mb-1">Driver Safety</span>
-                  <span class="text-text/60 font-mono text-[10px]">compliance · monitoring</span>
+                  <span class="text-accent font-mono text-xs tracking-widest uppercase block mb-2">Infrastructure</span>
+                  <span class="text-text/40 font-mono text-[10px] leading-relaxed block">data centers · cloud · networking · hybrid</span>
                 </div>
               </div>
             </div>
             <div class="p-6 relative">
-              <h3 class="text-xl font-semibold mb-2 group-hover:text-accent transition-colors duration-300">Driver Compliance Portal</h3>
-              <p class="text-text-muted text-sm">Motor vehicle records dashboard with automated driver monitoring, HR roster sync, role-based access control, and pre-employment screening workflows. Built for regulatory compliance at scale.</p>
-              <div class="flex flex-wrap gap-2 mt-4">
-                <span class="text-xs font-mono px-2 py-1 bg-accent/10 text-accent rounded">Next.js</span>
-                <span class="text-xs font-mono px-2 py-1 bg-accent/10 text-accent rounded">REST API</span>
-                <span class="text-xs font-mono px-2 py-1 bg-accent/10 text-accent rounded">Neon</span>
-                <span class="text-xs font-mono px-2 py-1 bg-accent/10 text-accent rounded">MFA</span>
-              </div>
+              <h3 class="text-xl font-semibold mb-2 group-hover:text-accent transition-colors duration-300">Systems & Infrastructure</h3>
+              <p class="text-text-muted text-sm">Data center builds, cloud migrations, network architecture, and hybrid deployments. We design infrastructure that scales without surprises — from rack-and-stack to production monitoring. Not theoretical; the kind you deploy, maintain, and stand behind.</p>
             </div>
           </div>
           <div class="tilt-glare" aria-hidden="true"></div>
         </article>
         <article class="tilt-card group relative bg-surface rounded-2xl border border-white/5 overflow-hidden" data-tilt>
           <div class="tilt-inner">
-            <div class="aspect-video relative overflow-hidden">
+            <div class="aspect-[3/2] relative overflow-hidden">
               <div class="absolute inset-0 preview-gradient preview-gradient-a" style="animation-delay: -3s"></div>
               <div class="absolute inset-0 preview-grid"></div>
-              <div class="absolute inset-0 flex items-center justify-center">
+              <div class="absolute inset-0 flex items-center justify-center px-6">
                 <div class="text-center">
-                  <span class="text-accent font-mono text-xs tracking-widest uppercase block mb-1">Cross-Platform</span>
-                  <span class="text-text/60 font-mono text-[10px]">iOS · web · shared DB</span>
+                  <span class="text-accent font-mono text-xs tracking-widest uppercase block mb-2">Integration</span>
+                  <span class="text-text/40 font-mono text-[10px] leading-relaxed block">ERP · HR systems · automation · sync</span>
                 </div>
               </div>
             </div>
             <div class="p-6 relative">
-              <h3 class="text-xl font-semibold mb-2 group-hover:text-accent transition-colors duration-300">Field Attendance System</h3>
-              <p class="text-text-muted text-sm">Native iOS app with geofenced check-ins and a companion web dashboard sharing the same cloud database. Real-time attendance data flows directly into the workforce management platform — no middleware, no sync delays.</p>
-              <div class="flex flex-wrap gap-2 mt-4">
-                <span class="text-xs font-mono px-2 py-1 bg-accent/10 text-accent rounded">Swift</span>
-                <span class="text-xs font-mono px-2 py-1 bg-accent/10 text-accent rounded">PostgreSQL</span>
-                <span class="text-xs font-mono px-2 py-1 bg-accent/10 text-accent rounded">REST API</span>
-              </div>
+              <h3 class="text-xl font-semibold mb-2 group-hover:text-accent transition-colors duration-300">System Integration</h3>
+              <p class="text-text-muted text-sm">Connect the systems you already run. HR platforms, ERP databases, payroll tools, third-party APIs — we build the bridges between them so data flows automatically instead of living in spreadsheets and inboxes.</p>
             </div>
           </div>
           <div class="tilt-glare" aria-hidden="true"></div>
         </article>
         <article class="tilt-card group relative bg-surface rounded-2xl border border-white/5 overflow-hidden" data-tilt>
           <div class="tilt-inner">
-            <div class="aspect-video relative overflow-hidden">
+            <div class="aspect-[3/2] relative overflow-hidden">
               <div class="absolute inset-0 preview-gradient preview-gradient-b" style="animation-delay: -9s"></div>
               <div class="absolute inset-0 preview-grid"></div>
-              <div class="absolute inset-0 flex items-center justify-center">
+              <div class="absolute inset-0 flex items-center justify-center px-6">
                 <div class="text-center">
-                  <span class="text-accent font-mono text-xs tracking-widest uppercase block mb-1">ERP Integration</span>
-                  <span class="text-text/60 font-mono text-[10px]">budgets · actuals · sync</span>
+                  <span class="text-accent font-mono text-xs tracking-widest uppercase block mb-2">IT Operations</span>
+                  <span class="text-text/40 font-mono text-[10px] leading-relaxed block">strategy · security · migrations · support</span>
                 </div>
               </div>
             </div>
             <div class="p-6 relative">
-              <h3 class="text-xl font-semibold mb-2 group-hover:text-accent transition-colors duration-300">Construction Project Tracker</h3>
-              <p class="text-text-muted text-sm">Job cost tracking platform with automated ERP data sync — 29K actuals, 50K budget lines, change orders, and cost class breakdowns. Real-time budget-vs-actual visibility for project managers and executives.</p>
-              <div class="flex flex-wrap gap-2 mt-4">
-                <span class="text-xs font-mono px-2 py-1 bg-accent/10 text-accent rounded">Next.js</span>
-                <span class="text-xs font-mono px-2 py-1 bg-accent/10 text-accent rounded">ODBC</span>
-                <span class="text-xs font-mono px-2 py-1 bg-accent/10 text-accent rounded">Neon</span>
-                <span class="text-xs font-mono px-2 py-1 bg-accent/10 text-accent rounded">Vercel</span>
-              </div>
+              <h3 class="text-xl font-semibold mb-2 group-hover:text-accent transition-colors duration-300">IT Strategy & Operations</h3>
+              <p class="text-text-muted text-sm">Technology strategy from someone who's run it at scale. Vendor evaluation, security audits, system migrations, and operational overhauls. We assess what you have, plan what you need, and execute the transition — not just hand you a report.</p>
             </div>
           </div>
           <div class="tilt-glare" aria-hidden="true"></div>
