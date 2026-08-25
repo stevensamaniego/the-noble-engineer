@@ -545,10 +545,9 @@ export function initHero() {
     const t = particleUniforms.uTime.value
     const sway = prefersReducedMotion ? 0 : 1
     if (!prefersReducedMotion) {
-      logoRx += (mouseY * 0.22 - logoRx) * Math.min(dt * 4, 1)
       logoRy += (mouseX * 0.3 - logoRy) * Math.min(dt * 4, 1)
     }
-    logoGroup.rotation.x = logoRx + sway * Math.sin(t * 0.5) * 0.02
+    logoGroup.rotation.x = sway * Math.sin(t * 0.5) * 0.02
     logoGroup.rotation.y = logoRy + sway * Math.sin(t * 0.35) * 0.05
     logoGroup.scale.setScalar((0.8 + 0.2 * e) * (1 + sway * 0.012 * Math.sin(t * 0.9)))
     // Depth slices converge as the emblem comes into focus
