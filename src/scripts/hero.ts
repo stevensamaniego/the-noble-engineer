@@ -65,7 +65,7 @@ const starVertexShader = /* glsl */ `
     vAlpha = eased * twinkle;
     vIsStar = aIsStar;
 
-    gl_PointSize = aSize * uPixelRatio * (1.0 + 0.15 * sin(uTime + aSeed * 30.0)) * (300.0 / -mvPosition.z);
+    gl_PointSize = aSize * uPixelRatio * (1.0 + 0.15 * sin(uTime + aSeed * 30.0)) * (30.0 / -mvPosition.z);
   }
 `
 
@@ -186,7 +186,7 @@ export function initHero() {
   const nebulaZ = -30
   const nebulaHeight = 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * (camera.position.z - nebulaZ) * 1.4
   const nebula = new THREE.Mesh(
-    new THREE.PlaneGeometry(nebulaHeight * 2.5, nebulaHeight),
+    new THREE.PlaneGeometry(nebulaHeight * Math.max(camera.aspect * 1.3, 2.5), nebulaHeight),
     nebulaMaterial
   )
   nebula.position.z = nebulaZ
@@ -236,7 +236,7 @@ export function initHero() {
     targets[i * 3 + 1] = cy + star.y * CONSTELLATION_SCALE
     targets[i * 3 + 2] = -1.5
     scatter(i)
-    sizes[i] = 7 + star.mag * 6
+    sizes[i] = 4 + star.mag * 4
     delays[i] = 0.3 + Math.random() * 0.3
     seeds[i] = Math.random()
     isStar[i] = 1
@@ -309,7 +309,7 @@ export function initHero() {
   // --- Render loop — pauses when the hero is off-screen or tab is hidden ---
   let visible = true
   let rafId = 0
-  const clock = new THREE.Clock()
+  let lastT = 0
   const FORMATION_DURATION = 3.2
   let lineTargetOpacity = 0
 
@@ -320,7 +320,7 @@ export function initHero() {
         const wasVisible = visible
         visible = entry.isIntersecting
         if (visible && !wasVisible) {
-          clock.getDelta() // swallow the pause so uTime doesn't jump
+          lastT = 0 // swallow the pause so uTime doesn't jump
           animate()
         }
       },
@@ -332,7 +332,7 @@ export function initHero() {
     if (document.hidden) {
       cancelAnimationFrame(rafId)
     } else if (visible) {
-      clock.getDelta()
+      lastT = 0
       animate()
     }
   })
@@ -342,7 +342,9 @@ export function initHero() {
     if (!visible || document.hidden) return
     rafId = requestAnimationFrame(animate)
 
-    const dt = Math.min(clock.getDelta(), 0.05)
+    const now = performance.now()
+    const dt = lastT === 0 ? 0.016 : Math.min((now - lastT) / 1000, 0.05)
+    lastT = now
     particleUniforms.uTime.value += dt
     nebulaUniforms.uTime.value += dt
 

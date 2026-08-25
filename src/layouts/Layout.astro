@@ -23,18 +23,27 @@ const {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <title>{title}</title>
+    <noscript>
+      <style>
+        /* No JS: never leave content hidden behind animation initial states */
+        .opacity-0 { opacity: 1 !important; }
+      </style>
+    </noscript>
   </head>
   <body class="bg-void text-text antialiased">
-    <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between backdrop-blur-md bg-void/60 border-b border-white/5">
+    <div id="cursor-glow" aria-hidden="true"></div>
+
+    <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between backdrop-blur-md bg-void/60 border-b border-white/5 opacity-0">
       <a href={`${import.meta.env.BASE_URL}`} class="text-lg font-semibold tracking-tight text-accent font-mono">
         TNE<span class="text-text-muted">_</span>
       </a>
-      <div class="flex gap-8 text-sm text-text-muted">
-        <a href="#work" class="hover:text-accent transition-colors">Work</a>
-        <a href="#capabilities" class="hover:text-accent transition-colors">Capabilities</a>
-        <a href="#about" class="hover:text-accent transition-colors">About</a>
-        <a href="#contact" class="hover:text-accent transition-colors">Contact</a>
+      <div class="flex gap-4 sm:gap-8 text-sm text-text-muted">
+        <a href="#work" data-nav-link class="nav-link">Work</a>
+        <a href="#capabilities" data-nav-link class="nav-link hidden sm:inline">Capabilities</a>
+        <a href="#about" data-nav-link class="nav-link">About</a>
+        <a href="#contact" data-nav-link class="nav-link">Contact</a>
       </div>
+      <div data-scroll-progress class="absolute bottom-0 left-0 right-0 h-px bg-accent origin-left scale-x-0 shadow-[0_0_8px_var(--color-accent)]"></div>
     </nav>
 
     <slot />
