@@ -2,6 +2,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
 import Lenis from 'lenis'
+import { logoEntrance } from './hero'
 
 gsap.registerPlugin(ScrollTrigger, SplitText)
 
@@ -10,7 +11,8 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 export function initAnimations() {
   if (prefersReducedMotion) {
     // Show everything immediately — no motion, no opacity traps
-    gsap.set('[data-animate], [data-hero-reveal], [data-hero-title], [data-split], nav', { opacity: 1, y: 0 })
+    gsap.set('[data-animate], [data-hero-reveal], [data-split], nav', { opacity: 1, y: 0 })
+    logoEntrance.p = 1
     document.querySelectorAll<HTMLElement>('[data-count]').forEach((el) => {
       el.textContent = el.dataset.count || el.textContent
     })
@@ -59,36 +61,14 @@ function initSmoothScroll() {
 }
 
 // ---------------------------------------------------------------------------
-// Page load: nav drops in, then the hero copy builds line by line while the
-// constellation forms behind it.
+// Page load: nav drops in, the eyebrow rises, then the logo emblem
+// materializes in front of the forming constellation — hero.ts maps the
+// entrance progress to opacity, scale, and depth-slice convergence, so the
+// mark comes into focus rather than just appearing.
 function initLoadSequence() {
-  const tl = gsap.timeline({
-    defaults: { ease: 'power3.out' },
-    // Glitch only kicks in after the title has fully assembled — the CSS
-    // pseudo-element overlay would clash with the per-char entrance.
-    onComplete: () => document.querySelector('[data-glitch]')?.classList.add('glitch-on'),
-  })
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
 
   tl.fromTo('nav', { y: -24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, 0.15)
-
-  const title = document.querySelector('[data-hero-title]')
-  if (title) {
-    const split = SplitText.create(title, { type: 'chars', charsClass: 'hero-char' })
-    gsap.set(title, { opacity: 1 })
-    tl.from(
-      split.chars,
-      {
-        y: 80,
-        opacity: 0,
-        rotationX: -60,
-        transformOrigin: '50% 100%',
-        duration: 0.9,
-        stagger: 0.028,
-        ease: 'power4.out',
-      },
-      0.45
-    )
-  }
 
   tl.fromTo(
     '[data-hero-reveal="eyebrow"]',
@@ -96,17 +76,19 @@ function initLoadSequence() {
     { y: 0, opacity: 1, duration: 0.7 },
     0.35
   )
+  // Logo entrance — starts once the constellation is already streaming in
+  tl.to(logoEntrance, { p: 1, duration: 1.8, ease: 'power2.out' }, 0.8)
   tl.fromTo(
     '[data-hero-reveal="subtitle"]',
     { y: 24, opacity: 0 },
     { y: 0, opacity: 1, duration: 0.8 },
-    1.15
+    1.5
   )
   tl.fromTo(
     '[data-hero-reveal="scroll-hint"]',
     { opacity: 0 },
     { opacity: 1, duration: 1 },
-    1.7
+    2.0
   )
 }
 

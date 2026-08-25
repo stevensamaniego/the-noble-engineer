@@ -222,6 +222,39 @@ const nebulaFragmentShader = /* glsl */ `
 `
 
 // ---------------------------------------------------------------------------
+// Logo emblem — the mark floats between the camera and the constellation as a
+// slab of z-offset texture slices (additive accent→violet copies behind a lit
+// front face), so pointer tilt parallaxes like solid geometry. Entrance
+// progress lives here so animations.ts can drive it from the load timeline:
+// the render loop maps p → opacity/scale, and the depth slices start spread
+// apart and converge as p→1, reading as blur snapping into focus.
+// ---------------------------------------------------------------------------
+
+const ACCENT = 0x00f0ff
+const ACCENT_SECONDARY = 0x7b61ff
+
+export const logoEntrance = { p: 0 }
+
+// Soft radial accent glow, drawn once into a canvas texture
+function makeGlowTexture(): THREE.CanvasTexture {
+  const size = 256
+  const c = document.createElement('canvas')
+  c.width = size
+  c.height = size
+  const ctx = c.getContext('2d')!
+  const g = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2)
+  g.addColorStop(0, 'rgba(0, 240, 255, 0.5)')
+  g.addColorStop(0.35, 'rgba(0, 240, 255, 0.16)')
+  g.addColorStop(0.65, 'rgba(123, 97, 255, 0.07)')
+  g.addColorStop(1, 'rgba(123, 97, 255, 0)')
+  ctx.fillStyle = g
+  ctx.fillRect(0, 0, size, size)
+  const tex = new THREE.CanvasTexture(c)
+  tex.colorSpace = THREE.SRGBColorSpace
+  return tex
+}
+
+// ---------------------------------------------------------------------------
 
 export function initHero() {
   const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement | null
@@ -365,9 +398,99 @@ export function initHero() {
   const lines = new THREE.LineSegments(lineGeometry, lineMaterial)
   scene.add(lines)
 
+  // --- Logo emblem — floating in front of the star field -------------------
+  if (prefersReducedMotion) logoEntrance.p = 1
+
+  // Lights only touch the emblem's front face (MeshStandardMaterial); the
+  // nebula and particles are unlit shader materials.
+  scene.add(new THREE.AmbientLight(0xffffff, 0.55))
+  const keyLight = new THREE.DirectionalLight(0xffffff, 1.4)
+  keyLight.position.set(2.5, 3, 4)
+  scene.add(keyLight)
+  const rimLight = new THREE.DirectionalLight(ACCENT_SECONDARY, 0.7)
+  rimLight.position.set(-3, -2, 2)
+  scene.add(rimLight)
+
+  const LOGO_Z = 2 // between the camera (z=8) and the stars (z=-1.5)
+  const logoGroup = new THREE.Group()
+  logoGroup.position.set(0, 0.15, LOGO_Z)
+  scene.add(logoGroup)
+
+  const glowMaterial = new THREE.SpriteMaterial({
+    map: makeGlowTexture(),
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    opacity: 0,
+  })
+  const glow = new THREE.Sprite(glowMaterial)
+  glow.scale.set(4.6, 4.6, 1)
+  glow.position.z = -0.6
+  logoGroup.add(glow)
+
+  // Materials scaled by the entrance: [material, resting opacity]
+  const logoFaded: [THREE.Material & { opacity: number }, number][] = []
+  // Depth slices with their resting z offsets — spread wide pre-entrance
+  const logoSlices: [THREE.Mesh, number][] = []
+  const logoDisposables: { dispose(): void }[] = [glowMaterial, glowMaterial.map!]
+
+  new THREE.TextureLoader().load('/logo-tne-white.png', (tex) => {
+    tex.colorSpace = THREE.SRGBColorSpace
+    tex.anisotropy = renderer.capabilities.getMaxAnisotropy()
+    const img = tex.image as { width: number; height: number }
+    const imgAspect = img.width / img.height
+    // Size against the frustum at the emblem's depth — ~1/3 of the viewport
+    // height on desktop, smaller on narrow screens, width-clamped so it never
+    // crowds the edges
+    const visibleH =
+      2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * (camera.position.z - LOGO_Z)
+    let H = visibleH * (camera.aspect < 1 ? 0.26 : 0.35)
+    H = Math.min(H, (visibleH * camera.aspect * 0.85) / imgAspect)
+    const logoGeometry = new THREE.PlaneGeometry(H * imgAspect, H)
+    logoDisposables.push(tex, logoGeometry)
+
+    // Depth slices behind the face — additive accent→violet copies at real
+    // z offsets, back-to-front so the additive blend stacks cleanly
+    const SLICES = 6
+    for (let i = SLICES; i >= 1; i--) {
+      const material = new THREE.MeshBasicMaterial({
+        map: tex,
+        color: new THREE.Color(ACCENT).lerp(new THREE.Color(ACCENT_SECONDARY), i / SLICES),
+        transparent: true,
+        opacity: 0,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+      })
+      const slice = new THREE.Mesh(logoGeometry, material)
+      slice.position.z = -i * 0.05
+      logoGroup.add(slice)
+      logoSlices.push([slice, -i * 0.05])
+      logoFaded.push([material, 0.17 - i * 0.018])
+      logoDisposables.push(material)
+    }
+
+    // Front face — lit, with a faint accent self-glow through the artwork
+    const frontMaterial = new THREE.MeshStandardMaterial({
+      map: tex,
+      transparent: true,
+      opacity: 0,
+      roughness: 0.45,
+      metalness: 0.25,
+      emissive: new THREE.Color(ACCENT),
+      emissiveMap: tex,
+      emissiveIntensity: 0.22,
+      depthWrite: false,
+    })
+    logoGroup.add(new THREE.Mesh(logoGeometry, frontMaterial))
+    logoFaded.push([frontMaterial, 1])
+    logoDisposables.push(frontMaterial)
+  })
+
   // --- Interaction ---------------------------------------------------------
   let mouseX = 0
   let mouseY = 0
+  let logoRx = 0
+  let logoRy = 0
   const onMouseMove = (e: MouseEvent) => {
     mouseX = (e.clientX / window.innerWidth - 0.5) * 2
     mouseY = (e.clientY / window.innerHeight - 0.5) * 2
@@ -441,6 +564,22 @@ export function initHero() {
       nebulaUniforms.uMouse.value.set(mouseX, mouseY)
     }
 
+    // Logo emblem: entrance materialize + pointer tilt + idle sway/breathing
+    const e = logoEntrance.p
+    const t = particleUniforms.uTime.value
+    const sway = prefersReducedMotion ? 0 : 1
+    if (!prefersReducedMotion) {
+      logoRx += (mouseY * 0.22 - logoRx) * Math.min(dt * 4, 1)
+      logoRy += (mouseX * 0.3 - logoRy) * Math.min(dt * 4, 1)
+    }
+    logoGroup.rotation.x = logoRx + sway * Math.sin(t * 0.5) * 0.02
+    logoGroup.rotation.y = logoRy + sway * Math.sin(t * 0.35) * 0.05
+    logoGroup.scale.setScalar((0.8 + 0.2 * e) * (1 + sway * 0.012 * Math.sin(t * 0.9)))
+    // Depth slices converge as the emblem comes into focus
+    logoSlices.forEach(([slice, baseZ]) => (slice.position.z = baseZ * (1 + (1 - e) * 6)))
+    logoFaded.forEach(([m, base]) => (m.opacity = base * e))
+    glowMaterial.opacity = 0.85 * e * (0.8 + 0.2 * sway * Math.sin(t * 1.2))
+
     renderer.render(scene, camera)
   }
 
@@ -455,6 +594,7 @@ export function initHero() {
     lineMaterial.dispose()
     nebula.geometry.dispose()
     nebulaMaterial.dispose()
+    logoDisposables.forEach((d) => d.dispose())
     renderer.dispose()
   }, { once: true })
 }

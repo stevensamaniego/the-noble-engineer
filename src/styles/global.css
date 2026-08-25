@@ -60,10 +60,6 @@ body {
   background: #3a3a4e;
 }
 
-.glow-text {
-  text-shadow: 0 0 20px var(--color-glow), 0 0 40px var(--color-glow);
-}
-
 /* ---------------------------------------------------------------------------
    Nav
 --------------------------------------------------------------------------- */
@@ -94,49 +90,6 @@ body {
 }
 
 /* ---------------------------------------------------------------------------
-   Logo — masked treatment of the transparent artwork. The mark is painted via
-   mask-image so it can be recolored freely. logo-tne-mark.png is the tree
-   alone (nav/footer scale); the About centerpiece is a Three.js scene
-   (logo-scene.ts) that textures logo-tne-white.png directly.
---------------------------------------------------------------------------- */
-.logo-mark {
-  display: block;
-  background-color: var(--color-text);
-  mask-image: url('/logo-tne-mark.png');
-  mask-size: contain;
-  mask-repeat: no-repeat;
-  mask-position: center;
-  -webkit-mask-image: url('/logo-tne-mark.png');
-  -webkit-mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-}
-/* Nav version: small, gently swaying in 3D, cyan on hover */
-.logo-nav-scene {
-  perspective: 400px;
-}
-.logo-nav {
-  width: 2.5rem;
-  height: 2.5rem;
-  animation: logo-sway 8s ease-in-out infinite;
-  transition: background-color 0.4s ease;
-}
-a:hover .logo-nav {
-  background-color: #ffffff;
-}
-@keyframes logo-sway {
-  0%, 100% { transform: rotateY(-14deg); }
-  50% { transform: rotateY(14deg); }
-}
-
-/* About centerpiece: the Three.js emblem scene (logo-scene.ts) renders into a
-   canvas filling this square container — kept square so the glow and pointer
-   tilt have headroom around the artwork. */
-.logo-scene {
-  aspect-ratio: 1 / 1;
-}
-
-/* ---------------------------------------------------------------------------
    Cursor glow — trails the pointer, sits under all content
 --------------------------------------------------------------------------- */
 #cursor-glow {
@@ -155,42 +108,6 @@ a:hover .logo-nav {
 }
 #cursor-glow.is-visible {
   opacity: 1;
-}
-
-/* ---------------------------------------------------------------------------
-   Hero title glitch — brief slice displacement every few seconds
---------------------------------------------------------------------------- */
-[data-glitch] {
-  position: relative;
-  display: inline-block;
-}
-.glitch-on::before,
-.glitch-on::after {
-  content: attr(data-text);
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  pointer-events: none;
-}
-.glitch-on::before {
-  color: #ff3366;
-  animation: glitch-a 6s infinite steps(1);
-}
-.glitch-on::after {
-  color: var(--color-accent);
-  animation: glitch-b 6s infinite steps(1);
-}
-@keyframes glitch-a {
-  0%, 92.9%, 96.5%, 100% { opacity: 0; }
-  93% { opacity: 0.8; transform: translate(-4px, 2px); clip-path: inset(15% 0 60% 0); }
-  94% { opacity: 0.8; transform: translate(3px, -1px); clip-path: inset(55% 0 20% 0); }
-  95.5% { opacity: 0.8; transform: translate(-2px, 0); clip-path: inset(30% 0 45% 0); }
-}
-@keyframes glitch-b {
-  0%, 92.9%, 96.5%, 100% { opacity: 0; }
-  93.2% { opacity: 0.8; transform: translate(4px, -2px); clip-path: inset(65% 0 10% 0); }
-  94.4% { opacity: 0.8; transform: translate(-3px, 1px); clip-path: inset(10% 0 70% 0); }
-  95.8% { opacity: 0.8; transform: translate(2px, 1px); clip-path: inset(40% 0 35% 0); }
 }
 
 /* ---------------------------------------------------------------------------
@@ -403,10 +320,7 @@ a:hover .logo-nav {
    Reduced motion — kill decorative CSS animation
 --------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-  .glitch-on::before,
-  .glitch-on::after,
   .contact-ring,
-  .logo-nav,
   .bridge-pulse {
     animation: none;
   }

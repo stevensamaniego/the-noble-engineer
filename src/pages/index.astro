@@ -3,15 +3,15 @@ import Layout from '../layouts/Layout.astro'
 ---
 
 <Layout>
-  <!-- Hero — Three.js Orion constellation scene -->
+  <!-- Hero — Three.js Orion constellation scene with the 3D logo emblem
+       floating in front of it (both render on hero-canvas; see hero.ts) -->
   <section id="hero" class="relative h-screen flex items-center justify-center overflow-hidden">
-    <canvas id="hero-canvas" class="absolute inset-0 w-full h-full"></canvas>
-    <div class="relative z-10 text-center px-6">
-      <p class="text-accent font-mono text-sm tracking-[0.3em] uppercase mb-4 opacity-0" data-hero-reveal="eyebrow">Engineering the Future</p>
-      <h1 class="text-6xl md:text-8xl font-extrabold tracking-tight leading-none mb-6 opacity-0 [perspective:800px]" data-hero-title>
-        The Noble<br />
-        <span class="text-accent glow-text" data-glitch data-text="Engineer">Engineer</span>
-      </h1>
+    <canvas id="hero-canvas" class="absolute inset-0 w-full h-full" role="img" aria-label="The Noble Engineer — tree emblem floating before the Orion constellation"></canvas>
+    <h1 class="sr-only">The Noble Engineer</h1>
+    <div class="relative z-10 flex flex-col items-center text-center px-6">
+      <p class="text-accent font-mono text-sm tracking-[0.3em] uppercase opacity-0" data-hero-reveal="eyebrow">Engineering the Future</p>
+      <!-- Logo slot — empty space the 3D emblem occupies on the canvas behind -->
+      <div class="h-[30vh] min-h-[220px] md:h-[38vh] md:min-h-[320px]" aria-hidden="true"></div>
       <p class="text-text-muted text-lg md:text-xl max-w-xl mx-auto opacity-0" data-hero-reveal="subtitle">
         Technology consulting, custom software, and infrastructure — built to last.
       </p>
@@ -199,39 +199,32 @@ import Layout from '../layouts/Layout.astro'
     </div>
   </section>
 
-  <!-- About — 3D logo centerpiece + narrative -->
+  <!-- About — full-width centered narrative -->
   <section id="about" class="relative py-32 md:py-44 px-6 overflow-hidden">
     <div class="pointer-events-none absolute -left-40 top-20 w-[450px] h-[450px] rounded-full bg-accent-secondary/[0.04] blur-3xl" data-parallax="0.15"></div>
-    <div class="max-w-7xl mx-auto grid grid-cols-12 gap-x-8 gap-y-16 items-center">
-      <div class="col-span-12 md:col-span-5">
-        <div class="logo-scene relative max-w-sm mx-auto md:mx-0">
-          <canvas id="logo-canvas" class="absolute inset-0 w-full h-full" role="img" aria-label="The Noble Engineer — tree logo"></canvas>
+    <div class="max-w-3xl mx-auto text-center">
+      <p class="font-mono text-xs tracking-[0.3em] uppercase text-text-muted mb-5" data-animate="fade-up">About</p>
+      <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-8 opacity-0" data-split>
+        Twenty years of building.
+      </h2>
+      <p class="serif-voice text-lg md:text-xl leading-relaxed text-text/85 mb-6" data-animate="fade-up">
+        The first server rack I ever built was in a closet with no AC. Fifteen years later, I was designing data centers for a global brand — redundant power, redundant cooling, redundant everything. The closet taught me more.
+      </p>
+      <p class="serif-voice text-lg md:text-xl leading-relaxed text-text/85 mb-14" data-animate="fade-up" data-delay="0.1">
+        That's the through-line: build real things, learn what breaks, carry those lessons forward. Every platform I ship, every network I design, every system I integrate — it's twenty years of knowing what actually goes wrong when you cut corners.
+      </p>
+      <div class="grid grid-cols-3 gap-6 max-w-2xl mx-auto" data-animate-group>
+        <div>
+          <p class="stat-num"><span data-count="20">0</span>+</p>
+          <p class="stat-label mt-2">Years engineering</p>
         </div>
-      </div>
-      <div class="col-span-12 md:col-span-6 md:col-start-7">
-        <p class="font-mono text-xs tracking-[0.3em] uppercase text-text-muted mb-5" data-animate="fade-up">About</p>
-        <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-8 opacity-0" data-split>
-          Twenty years of building.
-        </h2>
-        <p class="serif-voice text-lg md:text-xl leading-relaxed text-text/85 mb-6" data-animate="fade-up">
-          The first server rack I ever built was in a closet with no AC. Fifteen years later, I was designing data centers for a global brand — redundant power, redundant cooling, redundant everything. The closet taught me more.
-        </p>
-        <p class="serif-voice text-lg md:text-xl leading-relaxed text-text/85 mb-12" data-animate="fade-up" data-delay="0.1">
-          That's the through-line: build real things, learn what breaks, carry those lessons forward. Every platform I ship, every network I design, every system I integrate — it's twenty years of knowing what actually goes wrong when you cut corners.
-        </p>
-        <div class="grid grid-cols-3 gap-6" data-animate-group>
-          <div>
-            <p class="stat-num"><span data-count="20">0</span>+</p>
-            <p class="stat-label mt-2">Years engineering</p>
-          </div>
-          <div>
-            <p class="font-mono text-text text-lg md:text-xl mt-3 md:mt-5">DC&nbsp;→&nbsp;SaaS</p>
-            <p class="stat-label mt-2">Data center to cloud</p>
-          </div>
-          <div>
-            <p class="font-mono text-text text-lg md:text-xl mt-3 md:mt-5">Lead&nbsp;Eng</p>
-            <p class="stat-label mt-2">Background</p>
-          </div>
+        <div>
+          <p class="font-mono text-text text-lg md:text-xl mt-3 md:mt-5">DC&nbsp;→&nbsp;SaaS</p>
+          <p class="stat-label mt-2">Data center to cloud</p>
+        </div>
+        <div>
+          <p class="font-mono text-text text-lg md:text-xl mt-3 md:mt-5">Lead&nbsp;Eng</p>
+          <p class="stat-label mt-2">Background</p>
         </div>
       </div>
     </div>
@@ -263,12 +256,10 @@ import Layout from '../layouts/Layout.astro'
 
 <script>
   import { initHero } from '../scripts/hero'
-  import { initLogoScene } from '../scripts/logo-scene'
   import { initAnimations } from '../scripts/animations'
   import { initInteractions } from '../scripts/interactions'
 
   initHero()
-  initLogoScene()
   initAnimations()
   initInteractions()
 </script>

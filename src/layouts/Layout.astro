@@ -36,8 +36,8 @@ const year = new Date().getFullYear()
     <div id="cursor-glow" aria-hidden="true"></div>
 
     <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-3 flex items-center justify-between backdrop-blur-md bg-void/60 border-b border-white/5 opacity-0">
-      <a href={`${import.meta.env.BASE_URL}`} class="group flex items-center gap-3 logo-nav-scene">
-        <span class="logo-mark logo-nav" role="img" aria-label="The Noble Engineer"></span>
+      <a href={`${import.meta.env.BASE_URL}`} class="group flex items-baseline gap-3 py-2">
+        <span class="font-mono text-sm tracking-[0.25em] text-accent">TNE</span>
         <span class="hidden md:inline font-mono text-[0.65rem] tracking-[0.3em] uppercase text-text-muted group-hover:text-text transition-colors duration-300">The Noble Engineer</span>
       </a>
       <div class="flex gap-4 sm:gap-8 text-sm text-text-muted">
@@ -54,7 +54,7 @@ const year = new Date().getFullYear()
       <div class="pointer-events-none absolute -bottom-32 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full bg-accent/[0.03] blur-3xl" aria-hidden="true"></div>
       <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-end justify-between gap-10">
         <div>
-          <span class="logo-mark w-16 h-16 mb-4" role="img" aria-label="The Noble Engineer"></span>
+          <p class="font-mono text-sm tracking-[0.25em] text-accent mb-3">TNE</p>
           <p class="font-mono text-[0.65rem] tracking-[0.3em] uppercase text-text-muted">The Noble Engineer</p>
           <p class="mt-2 text-xs text-text-muted">El Paso, TX — serving clients nationwide</p>
         </div>
