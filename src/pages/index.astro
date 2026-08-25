@@ -23,177 +23,215 @@ import Layout from '../layouts/Layout.astro'
     </div>
   </section>
 
-  <!-- What We Do -->
-  <section id="work" class="relative py-32 px-6 overflow-hidden">
-    <div class="pointer-events-none absolute -right-40 top-20 w-[500px] h-[500px] rounded-full bg-accent/[0.03] blur-3xl" data-parallax="0.25"></div>
-    <div class="max-w-6xl mx-auto">
-      <p class="text-accent font-mono text-sm tracking-[0.3em] uppercase mb-2" data-animate="fade-up">What We Do</p>
-      <h2 class="text-4xl md:text-5xl font-bold mb-16 opacity-0" data-split>Built to Perform</h2>
-      <div class="grid md:grid-cols-2 gap-8" data-animate-group>
-        <article class="tilt-card group relative bg-surface rounded-2xl border border-white/5 overflow-hidden" data-tilt>
-          <div class="tilt-inner">
-            <div class="aspect-[3/2] relative overflow-hidden">
-              <div class="absolute inset-0 preview-gradient preview-gradient-a"></div>
-              <div class="absolute inset-0 preview-grid"></div>
-              <div class="absolute inset-0 flex items-center justify-center px-6">
-                <div class="text-center">
-                  <span class="text-accent font-mono text-xs tracking-widest uppercase block mb-2">Custom Software</span>
-                  <span class="text-text/40 font-mono text-[10px] leading-relaxed block">web apps · mobile · APIs · integrations</span>
-                </div>
-              </div>
-            </div>
-            <div class="p-6 relative">
-              <h3 class="text-xl font-semibold mb-2 group-hover:text-accent transition-colors duration-300">Production Applications</h3>
-              <p class="text-text-muted text-sm">Full-stack web platforms, native mobile apps, and REST APIs — built for real users on real deadlines. From digital forms replacing paper workflows to compliance portals handling hundreds of employees, we ship production software that works the day it deploys.</p>
-            </div>
-          </div>
-          <div class="tilt-glare" aria-hidden="true"></div>
-        </article>
-        <article class="tilt-card group relative bg-surface rounded-2xl border border-white/5 overflow-hidden" data-tilt>
-          <div class="tilt-inner">
-            <div class="aspect-[3/2] relative overflow-hidden">
-              <div class="absolute inset-0 preview-gradient preview-gradient-b"></div>
-              <div class="absolute inset-0 preview-grid"></div>
-              <div class="absolute inset-0 flex items-center justify-center px-6">
-                <div class="text-center">
-                  <span class="text-accent font-mono text-xs tracking-widest uppercase block mb-2">Infrastructure</span>
-                  <span class="text-text/40 font-mono text-[10px] leading-relaxed block">data centers · cloud · networking · hybrid</span>
-                </div>
-              </div>
-            </div>
-            <div class="p-6 relative">
-              <h3 class="text-xl font-semibold mb-2 group-hover:text-accent transition-colors duration-300">Systems & Infrastructure</h3>
-              <p class="text-text-muted text-sm">Data center builds, cloud migrations, network architecture, and hybrid deployments. We design infrastructure that scales without surprises — from rack-and-stack to production monitoring. Not theoretical; the kind you deploy, maintain, and stand behind.</p>
-            </div>
-          </div>
-          <div class="tilt-glare" aria-hidden="true"></div>
-        </article>
-        <article class="tilt-card group relative bg-surface rounded-2xl border border-white/5 overflow-hidden" data-tilt>
-          <div class="tilt-inner">
-            <div class="aspect-[3/2] relative overflow-hidden">
-              <div class="absolute inset-0 preview-gradient preview-gradient-a" style="animation-delay: -3s"></div>
-              <div class="absolute inset-0 preview-grid"></div>
-              <div class="absolute inset-0 flex items-center justify-center px-6">
-                <div class="text-center">
-                  <span class="text-accent font-mono text-xs tracking-widest uppercase block mb-2">Integration</span>
-                  <span class="text-text/40 font-mono text-[10px] leading-relaxed block">ERP · HR systems · automation · sync</span>
-                </div>
-              </div>
-            </div>
-            <div class="p-6 relative">
-              <h3 class="text-xl font-semibold mb-2 group-hover:text-accent transition-colors duration-300">System Integration</h3>
-              <p class="text-text-muted text-sm">Connect the systems you already run. HR platforms, ERP databases, payroll tools, third-party APIs — we build the bridges between them so data flows automatically instead of living in spreadsheets and inboxes.</p>
-            </div>
-          </div>
-          <div class="tilt-glare" aria-hidden="true"></div>
-        </article>
-        <article class="tilt-card group relative bg-surface rounded-2xl border border-white/5 overflow-hidden" data-tilt>
-          <div class="tilt-inner">
-            <div class="aspect-[3/2] relative overflow-hidden">
-              <div class="absolute inset-0 preview-gradient preview-gradient-b" style="animation-delay: -9s"></div>
-              <div class="absolute inset-0 preview-grid"></div>
-              <div class="absolute inset-0 flex items-center justify-center px-6">
-                <div class="text-center">
-                  <span class="text-accent font-mono text-xs tracking-widest uppercase block mb-2">IT Operations</span>
-                  <span class="text-text/40 font-mono text-[10px] leading-relaxed block">strategy · security · migrations · support</span>
-                </div>
-              </div>
-            </div>
-            <div class="p-6 relative">
-              <h3 class="text-xl font-semibold mb-2 group-hover:text-accent transition-colors duration-300">IT Strategy & Operations</h3>
-              <p class="text-text-muted text-sm">Technology strategy from someone who's run it at scale. Vendor evaluation, security audits, system migrations, and operational overhauls. We assess what you have, plan what you need, and execute the transition — not just hand you a report.</p>
-            </div>
-          </div>
-          <div class="tilt-glare" aria-hidden="true"></div>
-        </article>
+  <!-- Keyword marquee -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Custom Software</span><span>Infrastructure</span><span>System Integration</span><span>IT Strategy</span>
+    </div>
+    <div class="marquee-track" aria-hidden="true">
+      <span>Custom Software</span><span>Infrastructure</span><span>System Integration</span><span>IT Strategy</span>
+    </div>
+  </div>
+
+  <!-- Services — editorial intro -->
+  <section id="services" class="relative pt-36 md:pt-48 pb-20 px-6 overflow-hidden">
+    <div class="pointer-events-none absolute -right-40 top-24 w-[500px] h-[500px] rounded-full bg-accent/[0.03] blur-3xl" data-parallax="0.25"></div>
+    <div class="max-w-7xl mx-auto">
+      <p class="font-mono text-xs tracking-[0.3em] uppercase text-accent mb-6" data-animate="fade-up">01 — 04 &nbsp;/&nbsp; Services</p>
+      <h2 class="text-[clamp(2.6rem,7vw,6rem)] font-extrabold tracking-tight leading-[1.03] max-w-5xl opacity-0" data-split>
+        The systems your business runs on, built by someone who has run them.
+      </h2>
+      <div class="flex justify-end mt-12 md:mt-16">
+        <p class="text-text-muted text-lg max-w-md md:text-right" data-animate="fade-up">
+          Four disciplines, one engineer-led practice. No hand-offs, no account managers — the person you talk to is the person who builds it.
+        </p>
       </div>
     </div>
   </section>
 
-  <!-- Capabilities -->
-  <section id="capabilities" class="relative py-32 px-6 bg-surface overflow-hidden">
-    <div class="pointer-events-none absolute -left-40 bottom-0 w-[400px] h-[400px] rounded-full bg-accent-secondary/[0.04] blur-3xl" data-parallax="0.15"></div>
-    <div class="max-w-6xl mx-auto">
-      <p class="text-accent font-mono text-sm tracking-[0.3em] uppercase mb-2" data-animate="fade-up">Capabilities</p>
-      <h2 class="text-4xl md:text-5xl font-bold mb-16 opacity-0" data-split>End-to-End Engineering</h2>
-      <div class="grid md:grid-cols-3 gap-8" data-animate-group>
-        <div class="cap-card p-8 rounded-2xl border border-white/5 bg-void/40">
-          <div class="w-14 h-14 rounded-lg bg-accent/10 flex items-center justify-center mb-6">
-            <!-- Infrastructure: network nodes with pulsing links -->
-            <svg viewBox="0 0 48 48" class="w-8 h-8 icon-infra" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round">
-              <path class="icon-draw" d="M24 14 L10 34 M24 14 L38 34 M10 34 L38 34" />
-              <circle class="icon-node" cx="24" cy="14" r="3.5" fill="var(--color-accent)" stroke="none" />
-              <circle class="icon-node" style="animation-delay: 0.4s" cx="10" cy="34" r="3.5" fill="var(--color-accent)" stroke="none" />
-              <circle class="icon-node" style="animation-delay: 0.8s" cx="38" cy="34" r="3.5" fill="var(--color-accent)" stroke="none" />
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold mb-3">Infrastructure</h3>
-          <p class="text-text-muted text-sm leading-relaxed">Data centers built from the ground up — compute, storage, networking, and virtualization. Hybrid cloud migrations, high-availability design, and the kind of infrastructure that runs without drama.</p>
-        </div>
-        <div class="cap-card p-8 rounded-2xl border border-white/5 bg-void/40">
-          <div class="w-14 h-14 rounded-lg bg-accent/10 flex items-center justify-center mb-6">
-            <!-- Software: code brackets with blinking cursor -->
-            <svg viewBox="0 0 48 48" class="w-8 h-8" fill="none" stroke="var(--color-accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path class="icon-draw" d="M16 14 L6 24 L16 34" />
-              <path class="icon-draw" style="animation-delay: 0.3s" d="M32 14 L42 24 L32 34" />
-              <line class="icon-cursor" x1="24" y1="15" x2="24" y2="33" stroke-width="2" />
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold mb-3">Software Development</h3>
-          <p class="text-text-muted text-sm leading-relaxed">Production web apps, native iOS, REST APIs, and enterprise integrations. From prototype to deployment in weeks, not quarters — with the security and reliability you'd expect from a team twice the size.</p>
-        </div>
-        <div class="cap-card p-8 rounded-2xl border border-white/5 bg-void/40">
-          <div class="w-14 h-14 rounded-lg bg-accent/10 flex items-center justify-center mb-6">
-            <!-- Consulting: radar sweep -->
-            <svg viewBox="0 0 48 48" class="w-8 h-8" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round">
-              <circle cx="24" cy="24" r="18" opacity="0.35" />
-              <circle cx="24" cy="24" r="10" opacity="0.5" />
-              <g class="icon-radar" style="transform-origin: 24px 24px">
-                <line x1="24" y1="24" x2="24" y2="6" />
-              </g>
-              <circle class="icon-node" cx="32" cy="17" r="2.5" fill="var(--color-accent)" stroke="none" />
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold mb-3">IT Consulting</h3>
-          <p class="text-text-muted text-sm leading-relaxed">Technology strategy for companies that need answers, not slide decks. Vendor evaluation, security audits, system migrations, and operational overhauls — from a lead engineer, not a sales rep.</p>
-        </div>
+  <!-- 01 — Custom Software -->
+  <section class="relative px-6 py-28 md:py-40 overflow-hidden">
+    <span class="service-index left-2 md:left-6" data-parallax="0.12" aria-hidden="true">01</span>
+    <svg class="service-accent hidden md:block right-[8%] top-[14%] w-56" viewBox="0 0 200 160" fill="none" stroke-width="1" data-draw aria-hidden="true">
+      <polyline points="14,128 58,74 104,96 152,30 186,52" />
+      <line x1="104" y1="96" x2="128" y2="140" />
+      <circle cx="14" cy="128" r="3" /><circle cx="58" cy="74" r="4" /><circle cx="104" cy="96" r="3" />
+      <circle cx="152" cy="30" r="4.5" /><circle cx="186" cy="52" r="3" /><circle cx="128" cy="140" r="3" />
+    </svg>
+    <div class="max-w-7xl mx-auto grid grid-cols-12 gap-x-8 gap-y-12 items-start relative pt-16 md:pt-24">
+      <div class="col-span-12 md:col-span-7">
+        <p class="font-mono text-xs tracking-[0.3em] uppercase text-accent mb-5" data-animate="fade-up">Custom Software</p>
+        <h3 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-8 opacity-0" data-split>
+          Software that ships — and stays shipped.
+        </h3>
+        <p class="text-text-muted text-lg leading-relaxed max-w-xl" data-animate="fade-up">
+          Full-stack web platforms, native mobile apps, and the APIs behind them — built for real users on real deadlines. Production software that works the day it deploys and keeps working after everyone stops watching it.
+        </p>
+      </div>
+      <div class="col-span-12 md:col-span-4 md:col-start-9 md:pt-10">
+        <ul class="ledger" data-animate-group>
+          <li class="ledger-item"><span class="ledger-num">/01</span><span class="ledger-label">Web platforms</span></li>
+          <li class="ledger-item"><span class="ledger-num">/02</span><span class="ledger-label">Native mobile apps</span></li>
+          <li class="ledger-item"><span class="ledger-num">/03</span><span class="ledger-label">APIs &amp; backends</span></li>
+          <li class="ledger-item"><span class="ledger-num">/04</span><span class="ledger-label">Legacy modernization</span></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="section-rule max-w-7xl mx-auto mt-24 md:mt-32" data-rule />
+  </section>
+
+  <!-- 02 — Infrastructure (mirrored) -->
+  <section class="relative px-6 py-28 md:py-40 overflow-hidden">
+    <span class="service-index right-2 md:right-6" data-parallax="0.12" aria-hidden="true">02</span>
+    <svg class="service-accent hidden md:block left-[7%] top-[18%] w-56" viewBox="0 0 200 160" fill="none" stroke-width="1" data-draw aria-hidden="true">
+      <polyline points="20,30 20,130 180,130 180,60" />
+      <line x1="20" y1="80" x2="100" y2="80" /><line x1="100" y1="80" x2="100" y2="130" />
+      <circle cx="20" cy="30" r="4" /><circle cx="20" cy="130" r="3" /><circle cx="180" cy="130" r="3" />
+      <circle cx="180" cy="60" r="4.5" /><circle cx="100" cy="80" r="3" />
+    </svg>
+    <div class="max-w-7xl mx-auto grid grid-cols-12 gap-x-8 gap-y-12 items-start relative pt-16 md:pt-24">
+      <div class="col-span-12 md:col-span-7 md:col-start-6 md:order-2">
+        <p class="font-mono text-xs tracking-[0.3em] uppercase text-accent mb-5" data-animate="fade-up">Infrastructure</p>
+        <h3 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-8 opacity-0" data-split>
+          Infrastructure without drama.
+        </h3>
+        <p class="text-text-muted text-lg leading-relaxed max-w-xl" data-animate="fade-up">
+          Data center builds, cloud migrations, network architecture, and hybrid deployments — designed to scale without surprises. From rack-and-stack to production monitoring, the kind of infrastructure you deploy, maintain, and stand behind.
+        </p>
+      </div>
+      <div class="col-span-12 md:col-span-4 md:order-1 md:pt-10">
+        <ul class="ledger" data-animate-group>
+          <li class="ledger-item"><span class="ledger-num">/01</span><span class="ledger-label">Data center design</span></li>
+          <li class="ledger-item"><span class="ledger-num">/02</span><span class="ledger-label">Cloud &amp; hybrid migration</span></li>
+          <li class="ledger-item"><span class="ledger-num">/03</span><span class="ledger-label">Network architecture</span></li>
+          <li class="ledger-item"><span class="ledger-num">/04</span><span class="ledger-label">High availability</span></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="section-rule max-w-7xl mx-auto mt-24 md:mt-32" data-rule />
+  </section>
+
+  <!-- 03 — System Integration -->
+  <section class="relative px-6 py-28 md:py-40 overflow-hidden">
+    <span class="service-index left-2 md:left-6" data-parallax="0.12" aria-hidden="true">03</span>
+    <svg class="service-accent hidden md:block right-[6%] top-[16%] w-72" viewBox="0 0 260 160" fill="none" stroke-width="1" data-draw aria-hidden="true">
+      <polyline points="20,40 48,70 20,100" />
+      <polyline points="240,50 212,80 240,110" />
+      <path class="flow-line" d="M48,70 C110,70 150,80 212,80" />
+      <circle cx="20" cy="40" r="3.5" /><circle cx="48" cy="70" r="4" /><circle cx="20" cy="100" r="3.5" />
+      <circle cx="240" cy="50" r="3.5" /><circle cx="212" cy="80" r="4" /><circle cx="240" cy="110" r="3.5" />
+    </svg>
+    <div class="max-w-7xl mx-auto grid grid-cols-12 gap-x-8 gap-y-12 items-start relative pt-16 md:pt-24">
+      <div class="col-span-12 md:col-span-7">
+        <p class="font-mono text-xs tracking-[0.3em] uppercase text-accent mb-5" data-animate="fade-up">System Integration</p>
+        <h3 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-8 opacity-0" data-split>
+          Make the systems you already own talk to each other.
+        </h3>
+        <p class="text-text-muted text-lg leading-relaxed max-w-xl" data-animate="fade-up">
+          HR platforms, ERP databases, payroll tools, third-party APIs — bridged so data flows automatically instead of living in spreadsheets and inboxes. Integration work that turns a pile of vendors into one coherent system.
+        </p>
+      </div>
+      <div class="col-span-12 md:col-span-4 md:col-start-9 md:pt-10">
+        <ul class="ledger" data-animate-group>
+          <li class="ledger-item"><span class="ledger-num">/01</span><span class="ledger-label">ERP &amp; HR platforms</span></li>
+          <li class="ledger-item"><span class="ledger-num">/02</span><span class="ledger-label">Payroll &amp; finance systems</span></li>
+          <li class="ledger-item"><span class="ledger-num">/03</span><span class="ledger-label">Third-party APIs</span></li>
+          <li class="ledger-item"><span class="ledger-num">/04</span><span class="ledger-label">Workflow automation</span></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="section-rule max-w-7xl mx-auto mt-24 md:mt-32" data-rule />
+  </section>
+
+  <!-- 04 — IT Strategy (mirrored) -->
+  <section class="relative px-6 py-28 md:py-40 overflow-hidden">
+    <span class="service-index right-2 md:right-6" data-parallax="0.12" aria-hidden="true">04</span>
+    <svg class="service-accent hidden md:block left-[8%] top-[16%] w-56" viewBox="0 0 200 160" fill="none" stroke-width="1" data-draw aria-hidden="true">
+      <polyline points="16,140 60,100 90,116 130,58 168,74 184,24" />
+      <circle cx="16" cy="140" r="3" /><circle cx="60" cy="100" r="3.5" /><circle cx="90" cy="116" r="3" />
+      <circle cx="130" cy="58" r="4" /><circle cx="168" cy="74" r="3" /><circle cx="184" cy="24" r="4.5" />
+    </svg>
+    <div class="max-w-7xl mx-auto grid grid-cols-12 gap-x-8 gap-y-12 items-start relative pt-16 md:pt-24">
+      <div class="col-span-12 md:col-span-7 md:col-start-6 md:order-2">
+        <p class="font-mono text-xs tracking-[0.3em] uppercase text-accent mb-5" data-animate="fade-up">IT Strategy</p>
+        <h3 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-8 opacity-0" data-split>
+          Strategy from the server room, not the slide deck.
+        </h3>
+        <p class="text-text-muted text-lg leading-relaxed max-w-xl" data-animate="fade-up">
+          Vendor evaluation, security audits, system migrations, and operational overhauls — from someone who has run technology at scale. We assess what you have, plan what you need, and execute the transition, not just hand you a report.
+        </p>
+      </div>
+      <div class="col-span-12 md:col-span-4 md:order-1 md:pt-10">
+        <ul class="ledger" data-animate-group>
+          <li class="ledger-item"><span class="ledger-num">/01</span><span class="ledger-label">Technology roadmaps</span></li>
+          <li class="ledger-item"><span class="ledger-num">/02</span><span class="ledger-label">Vendor evaluation</span></li>
+          <li class="ledger-item"><span class="ledger-num">/03</span><span class="ledger-label">Security audits</span></li>
+          <li class="ledger-item"><span class="ledger-num">/04</span><span class="ledger-label">Migrations &amp; overhauls</span></li>
+        </ul>
       </div>
     </div>
   </section>
 
-  <!-- About -->
-  <section id="about" class="relative py-32 px-6 overflow-hidden">
-    <div class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-accent/[0.06] rounded-full" data-parallax="0.1" aria-hidden="true"></div>
-    <div class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] border border-accent/[0.09] rounded-full" data-parallax="0.18" aria-hidden="true"></div>
-    <div class="max-w-4xl mx-auto text-center relative">
-      <p class="text-accent font-mono text-sm tracking-[0.3em] uppercase mb-2" data-animate="fade-up">About</p>
-      <h2 class="text-4xl md:text-5xl font-bold mb-8 opacity-0" data-split>20 Years of Building</h2>
-      <p class="text-text-muted text-lg leading-relaxed mb-4" data-animate="fade-up">
-        Started racking servers and running cable. Worked up to lead engineer at a global consumer products company — designing data centers, building networks, architecting the full application stack from the ground up.
-      </p>
-      <p class="text-text-muted text-lg leading-relaxed mb-8" data-animate="fade-up" data-delay="0.1">
-        Now I build production software and run IT operations for companies that need real solutions, not consultants who bill by the hour and leave you with a PDF. If it touches infrastructure, code, or operations — I've shipped it.
-      </p>
+  <!-- About — 3D logo centerpiece + narrative -->
+  <section id="about" class="relative py-32 md:py-44 px-6 overflow-hidden bg-surface">
+    <div class="pointer-events-none absolute -left-40 top-20 w-[450px] h-[450px] rounded-full bg-accent-secondary/[0.04] blur-3xl" data-parallax="0.15"></div>
+    <div class="max-w-7xl mx-auto grid grid-cols-12 gap-x-8 gap-y-16 items-center">
+      <div class="col-span-12 md:col-span-5">
+        <div class="logo-scene relative max-w-sm mx-auto md:mx-0" data-logo-scene>
+          <div class="logo-glow" aria-hidden="true"></div>
+          <div class="logo-stack" data-mask-reveal>
+            <div class="logo-layer logo-mark logo-layer-back" aria-hidden="true"></div>
+            <div class="logo-layer logo-mark logo-layer-mid" aria-hidden="true"></div>
+            <div class="logo-layer logo-mark logo-layer-front" role="img" aria-label="The Noble Engineer — tree logo"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-span-12 md:col-span-6 md:col-start-7">
+        <p class="font-mono text-xs tracking-[0.3em] uppercase text-accent mb-5" data-animate="fade-up">About</p>
+        <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-8 opacity-0" data-split>
+          Twenty years of building.
+        </h2>
+        <p class="text-text-muted text-lg leading-relaxed mb-5" data-animate="fade-up">
+          Started racking servers and running cable. Worked up to lead engineer — designing data centers, building networks, and architecting full application stacks from the ground up.
+        </p>
+        <p class="text-text-muted text-lg leading-relaxed mb-12" data-animate="fade-up" data-delay="0.1">
+          Now that experience goes into production software and IT operations for companies that need real solutions — not consultants who bill by the hour and leave you with a PDF.
+        </p>
+        <div class="grid grid-cols-3 gap-6" data-animate-group>
+          <div>
+            <p class="stat-num"><span data-count="20">0</span>+</p>
+            <p class="stat-label mt-2">Years engineering</p>
+          </div>
+          <div>
+            <p class="font-mono text-accent text-lg md:text-xl mt-3 md:mt-5">DC&nbsp;→&nbsp;SaaS</p>
+            <p class="stat-label mt-2">Data center to cloud</p>
+          </div>
+          <div>
+            <p class="font-mono text-accent text-lg md:text-xl mt-3 md:mt-5">Lead&nbsp;Eng</p>
+            <p class="stat-label mt-2">Background</p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- Contact -->
-  <section id="contact" class="relative py-32 px-6 bg-surface overflow-hidden">
-    <!-- Ambient: pulsing rings + floating geometry behind the CTA -->
+  <section id="contact" class="relative py-40 md:py-56 px-6 overflow-hidden">
     <div class="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden="true">
-      <div class="contact-ring w-72 h-72"></div>
-      <div class="contact-ring w-72 h-72" style="animation-delay: 2s"></div>
-      <div class="float-shape left-[18%] top-[25%] w-4 h-4 border border-accent/30 rotate-45"></div>
-      <div class="float-shape right-[20%] top-[35%] w-3 h-3 bg-accent/20 rounded-full" style="animation-delay: 1.5s"></div>
-      <div class="float-shape left-[28%] bottom-[20%] w-5 h-5 border border-accent-secondary/30" style="animation-delay: 3s"></div>
-      <div class="float-shape right-[26%] bottom-[28%] w-4 h-4 border border-accent/25 rotate-12 rounded-sm" style="animation-delay: 4.5s"></div>
+      <div class="contact-ring w-80 h-80"></div>
+      <div class="contact-ring w-80 h-80" style="animation-delay: 2s"></div>
     </div>
-    <div class="max-w-2xl mx-auto text-center relative">
-      <p class="text-accent font-mono text-sm tracking-[0.3em] uppercase mb-2" data-animate="fade-up">Get in Touch</p>
-      <h2 class="text-4xl md:text-5xl font-bold mb-8 opacity-0" data-split>Let's Build Something</h2>
-      <a href="mailto:steven@thenobleengineer.com" class="cta-button inline-block px-8 py-4 bg-accent text-void font-semibold rounded-lg glow-border" data-animate="fade-up">
-        Start a Conversation
+    <div class="max-w-6xl mx-auto relative">
+      <p class="font-mono text-xs tracking-[0.3em] uppercase text-accent mb-6" data-animate="fade-up">Contact</p>
+      <h2 class="text-[clamp(2.6rem,7vw,5.5rem)] font-extrabold tracking-tight leading-[1.03] max-w-4xl mb-14 opacity-0" data-split>
+        Let's build something that lasts.
+      </h2>
+      <a href="mailto:steven@thenobleengineer.com" class="email-link" data-magnetic data-animate="fade-up">
+        steven@thenobleengineer.com
       </a>
+      <p class="font-mono text-xs tracking-[0.2em] uppercase text-text-muted mt-10" data-animate="fade-up" data-delay="0.15">
+        Direct line to the engineer — no sales team, no ticket queue.
+      </p>
     </div>
   </section>
 </Layout>

@@ -4,7 +4,10 @@ const isTouch = window.matchMedia('(hover: none)').matches
 export function initInteractions() {
   if (!isTouch) {
     initCursorGlow()
-    if (!prefersReducedMotion) initTiltCards()
+    if (!prefersReducedMotion) {
+      initLogoScene()
+      initMagnetic()
+    }
   }
 }
 
@@ -55,35 +58,94 @@ function initCursorGlow() {
 }
 
 // ---------------------------------------------------------------------------
-// 3D tilt on work cards — pure CSS transforms driven by pointer position,
-// with a glare highlight that tracks the cursor via CSS custom properties.
-function initTiltCards() {
-  const MAX_TILT = 7
+// About logo: the layered mark tilts toward the pointer in true 3D. Rotation
+// targets are lerped in rAF and written as CSS custom properties consumed by
+// .logo-stack — the layer translateZ offsets do the parallax for free.
+function initLogoScene() {
+  const scene = document.querySelector<HTMLElement>('[data-logo-scene]')
+  if (!scene) return
+  const stack = scene.querySelector<HTMLElement>('.logo-stack')
+  if (!stack) return
 
-  document.querySelectorAll<HTMLElement>('[data-tilt]').forEach((card) => {
+  const MAX_TILT = 14
+  let targetRx = 0
+  let targetRy = 0
+  let rx = 0
+  let ry = 0
+  let rafId = 0
+  let running = false
+
+  const tick = () => {
+    rx += (targetRx - rx) * 0.08
+    ry += (targetRy - ry) * 0.08
+    stack.style.setProperty('--rx', `${rx.toFixed(3)}deg`)
+    stack.style.setProperty('--ry', `${ry.toFixed(3)}deg`)
+    if (Math.abs(targetRx - rx) + Math.abs(targetRy - ry) > 0.01) {
+      rafId = requestAnimationFrame(tick)
+    } else {
+      running = false
+    }
+  }
+
+  const start = () => {
+    if (!running) {
+      running = true
+      rafId = requestAnimationFrame(tick)
+    }
+  }
+
+  // Track the pointer across the whole section so the logo feels aware of the
+  // cursor before it's directly over the artwork.
+  const zone = scene.closest('section') || scene
+  zone.addEventListener(
+    'pointermove',
+    (e) => {
+      const rect = scene.getBoundingClientRect()
+      const px = ((e as PointerEvent).clientX - (rect.left + rect.width / 2)) / rect.width
+      const py = ((e as PointerEvent).clientY - (rect.top + rect.height / 2)) / rect.height
+      targetRy = Math.max(-1, Math.min(1, px)) * MAX_TILT
+      targetRx = Math.max(-1, Math.min(1, -py)) * MAX_TILT
+      start()
+    },
+    { passive: true }
+  )
+  zone.addEventListener('pointerleave', () => {
+    targetRx = 0
+    targetRy = 0
+    start()
+  })
+}
+
+// ---------------------------------------------------------------------------
+// Magnetic elements: [data-magnetic] drifts toward the cursor while hovered
+// and springs back on leave. Kept subtle — this is an accent, not a toy.
+function initMagnetic() {
+  const STRENGTH = 0.25
+
+  document.querySelectorAll<HTMLElement>('[data-magnetic]').forEach((el) => {
     let rafId = 0
 
-    card.addEventListener(
+    el.addEventListener(
       'pointermove',
       (e) => {
         cancelAnimationFrame(rafId)
         rafId = requestAnimationFrame(() => {
-          const rect = card.getBoundingClientRect()
-          const px = (e.clientX - rect.left) / rect.width
-          const py = (e.clientY - rect.top) / rect.height
-          const rx = (0.5 - py) * MAX_TILT * 2
-          const ry = (px - 0.5) * MAX_TILT * 2
-          card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`
-          card.style.setProperty('--glare-x', `${px * 100}%`)
-          card.style.setProperty('--glare-y', `${py * 100}%`)
+          const rect = el.getBoundingClientRect()
+          const dx = e.clientX - (rect.left + rect.width / 2)
+          const dy = e.clientY - (rect.top + rect.height / 2)
+          el.style.transform = `translate(${dx * STRENGTH}px, ${dy * STRENGTH}px)`
         })
       },
       { passive: true }
     )
 
-    card.addEventListener('pointerleave', () => {
+    el.addEventListener('pointerleave', () => {
       cancelAnimationFrame(rafId)
-      card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg)'
+      el.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)'
+      el.style.transform = 'translate(0, 0)'
+      setTimeout(() => {
+        el.style.transition = ''
+      }, 500)
     })
   })
 }

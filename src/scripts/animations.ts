@@ -11,6 +11,9 @@ export function initAnimations() {
   if (prefersReducedMotion) {
     // Show everything immediately — no motion, no opacity traps
     gsap.set('[data-animate], [data-hero-reveal], [data-hero-title], [data-split], nav', { opacity: 1, y: 0 })
+    document.querySelectorAll<HTMLElement>('[data-count]').forEach((el) => {
+      el.textContent = el.dataset.count || el.textContent
+    })
     initNavHighlight()
     return
   }
@@ -20,6 +23,10 @@ export function initAnimations() {
   initHeadingReveals()
   initSectionReveals()
   initParallax()
+  initDrawAccents()
+  initSectionRules()
+  initMaskReveals()
+  initCounters()
   initNavHighlight()
   initScrollProgress()
 
@@ -179,6 +186,97 @@ function initParallax() {
         start: 'top bottom',
         end: 'bottom top',
         scrub: true,
+      },
+    })
+  })
+}
+
+// ---------------------------------------------------------------------------
+// Constellation accents: strokes draw themselves in as the section scrolls
+// into view; nodes pop after their lines arrive. The animated flow-line keeps
+// its own CSS dash animation, so it's excluded from the draw effect.
+function initDrawAccents() {
+  document.querySelectorAll<SVGSVGElement>('[data-draw]').forEach((svg) => {
+    const strokes = Array.from(
+      svg.querySelectorAll<SVGGeometryElement>('path:not(.flow-line), line, polyline')
+    )
+    const nodes = Array.from(svg.querySelectorAll<SVGCircleElement>('circle'))
+    const flow = svg.querySelector<SVGGeometryElement>('.flow-line')
+
+    const tl = gsap.timeline({
+      scrollTrigger: { trigger: svg.closest('section') || svg, start: 'top 70%' },
+    })
+
+    strokes.forEach((el, i) => {
+      // getTotalLength can throw on non-rendered SVGs (accents are hidden on mobile)
+      let len = 0
+      try {
+        len = el.getTotalLength()
+      } catch {
+        return
+      }
+      if (!len) return
+      gsap.set(el, { strokeDasharray: len, strokeDashoffset: len })
+      tl.to(el, { strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut' }, i * 0.15)
+    })
+    tl.from(
+      nodes,
+      { scale: 0, transformOrigin: 'center', opacity: 0, duration: 0.5, stagger: 0.08, ease: 'back.out(2.5)' },
+      0.5
+    )
+    if (flow) {
+      tl.from(flow, { opacity: 0, duration: 0.8 }, 1)
+    }
+  })
+}
+
+// ---------------------------------------------------------------------------
+// Divider rules between service sections grow from the left as they enter.
+function initSectionRules() {
+  document.querySelectorAll<HTMLElement>('[data-rule]').forEach((el) => {
+    gsap.to(el, {
+      scaleX: 1,
+      duration: 1.4,
+      ease: 'power3.inOut',
+      scrollTrigger: { trigger: el, start: 'top 92%' },
+    })
+  })
+}
+
+// ---------------------------------------------------------------------------
+// Mask reveals: the About logo wipes upward from the ground line — the tree
+// "grows" into place as the section scrolls in.
+function initMaskReveals() {
+  document.querySelectorAll<HTMLElement>('[data-mask-reveal]').forEach((el) => {
+    gsap.fromTo(
+      el,
+      { clipPath: 'inset(100% 0% 0% 0%)' },
+      {
+        clipPath: 'inset(0% 0% 0% 0%)',
+        duration: 1.8,
+        ease: 'power3.inOut',
+        scrollTrigger: { trigger: el, start: 'top 78%' },
+        // clip-path flattens preserve-3d children — drop it once revealed so
+        // the layered logo regains its depth
+        clearProps: 'clipPath',
+      }
+    )
+  })
+}
+
+// ---------------------------------------------------------------------------
+// Stat counters: data-count="20" counts up from 0 when scrolled into view.
+function initCounters() {
+  document.querySelectorAll<HTMLElement>('[data-count]').forEach((el) => {
+    const target = parseInt(el.dataset.count || '0', 10)
+    const counter = { value: 0 }
+    gsap.to(counter, {
+      value: target,
+      duration: 1.6,
+      ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 88%' },
+      onUpdate: () => {
+        el.textContent = String(Math.round(counter.value))
       },
     })
   })

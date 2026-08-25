@@ -10,6 +10,8 @@ const {
   title = 'The Noble Engineer',
   description = 'Technology consulting, engineering, and innovation'
 } = Astro.props
+
+const year = new Date().getFullYear()
 ---
 
 <!doctype html>
@@ -33,13 +35,13 @@ const {
   <body class="bg-void text-text antialiased">
     <div id="cursor-glow" aria-hidden="true"></div>
 
-    <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between backdrop-blur-md bg-void/60 border-b border-white/5 opacity-0">
-      <a href={`${import.meta.env.BASE_URL}`} class="flex items-center">
-        <img src="/logo-tne.png" alt="The Noble Engineer" class="h-8 w-auto brightness-0 invert" />
+    <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-3 flex items-center justify-between backdrop-blur-md bg-void/60 border-b border-white/5 opacity-0">
+      <a href={`${import.meta.env.BASE_URL}`} class="group flex items-center gap-3 logo-nav-scene">
+        <span class="logo-mark logo-nav" role="img" aria-label="The Noble Engineer"></span>
+        <span class="hidden md:inline font-mono text-[0.65rem] tracking-[0.3em] uppercase text-text-muted group-hover:text-text transition-colors duration-300">The Noble Engineer</span>
       </a>
       <div class="flex gap-4 sm:gap-8 text-sm text-text-muted">
-        <a href="#work" data-nav-link class="nav-link">Services</a>
-        <a href="#capabilities" data-nav-link class="nav-link hidden sm:inline">Capabilities</a>
+        <a href="#services" data-nav-link class="nav-link">Services</a>
         <a href="#about" data-nav-link class="nav-link">About</a>
         <a href="#contact" data-nav-link class="nav-link">Contact</a>
       </div>
@@ -48,8 +50,23 @@ const {
 
     <slot />
 
-    <footer class="border-t border-white/5 px-6 py-12 text-center text-text-muted text-sm">
-      <p>&copy; {new Date().getFullYear()} The Noble Engineer. All rights reserved.</p>
+    <footer class="relative border-t border-white/5 px-6 pt-16 pb-10 overflow-hidden">
+      <div class="pointer-events-none absolute -bottom-32 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full bg-accent/[0.03] blur-3xl" aria-hidden="true"></div>
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-end justify-between gap-10">
+        <div>
+          <span class="logo-mark w-16 h-16 mb-4" role="img" aria-label="The Noble Engineer"></span>
+          <p class="font-mono text-[0.65rem] tracking-[0.3em] uppercase text-text-muted">The Noble Engineer</p>
+        </div>
+        <div class="flex gap-8 text-sm text-text-muted">
+          <a href="#services" class="nav-link">Services</a>
+          <a href="#about" class="nav-link">About</a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </div>
+        <div class="md:text-right text-sm text-text-muted">
+          <a href="mailto:steven@thenobleengineer.com" class="hover:text-accent transition-colors duration-300">steven@thenobleengineer.com</a>
+          <p class="mt-2 text-xs">&copy; {year} The Noble Engineer. All rights reserved.</p>
+        </div>
+      </div>
     </footer>
   </body>
 </html>

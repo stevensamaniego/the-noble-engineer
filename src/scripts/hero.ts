@@ -2,9 +2,12 @@ import * as THREE from 'three'
 
 // ---------------------------------------------------------------------------
 // Orion constellation — normalized 2D star chart (x right, y up).
-// The seven canonical bright stars plus Meissa (the head).
+// The full classical figure: the seven canonical bright stars plus Meissa
+// (the head), the raised club above Betelgeuse, the shield arc beyond
+// Bellatrix, and the sword hanging from the belt.
 // ---------------------------------------------------------------------------
 const ORION_STARS: { name: string; x: number; y: number; mag: number }[] = [
+  // Torso
   { name: 'Betelgeuse', x: -1.35, y: 1.45, mag: 1.0 },
   { name: 'Meissa', x: -0.3, y: 2.15, mag: 0.55 },
   { name: 'Bellatrix', x: 0.95, y: 1.35, mag: 0.75 },
@@ -13,18 +16,61 @@ const ORION_STARS: { name: string; x: number; y: number; mag: number }[] = [
   { name: 'Mintaka', x: 0.45, y: 0.22, mag: 0.75 },
   { name: 'Saiph', x: -0.95, y: -1.75, mag: 0.7 },
   { name: 'Rigel', x: 1.1, y: -1.65, mag: 1.0 },
+  // Raised arm + club
+  { name: 'Mu Ori', x: -1.78, y: 1.82, mag: 0.4 },
+  { name: 'Nu Ori', x: -1.98, y: 2.42, mag: 0.35 },
+  { name: 'Xi Ori', x: -1.6, y: 2.55, mag: 0.35 },
+  { name: 'Chi1 Ori', x: -1.85, y: 3.0, mag: 0.3 },
+  { name: 'Chi2 Ori', x: -1.45, y: 3.05, mag: 0.32 },
+  // Shield / bow arc
+  { name: 'Omicron1 Ori', x: 1.72, y: 2.28, mag: 0.3 },
+  { name: 'Omicron2 Ori', x: 1.92, y: 2.02, mag: 0.32 },
+  { name: 'Pi1 Ori', x: 2.2, y: 1.68, mag: 0.32 },
+  { name: 'Pi2 Ori', x: 2.36, y: 1.28, mag: 0.35 },
+  { name: 'Pi3 Ori', x: 2.45, y: 0.85, mag: 0.5 },
+  { name: 'Pi4 Ori', x: 2.4, y: 0.4, mag: 0.42 },
+  { name: 'Pi5 Ori', x: 2.3, y: -0.15, mag: 0.42 },
+  { name: 'Pi6 Ori', x: 2.08, y: -0.65, mag: 0.32 },
+  // Sword
+  { name: '42 Ori', x: -0.2, y: -0.52, mag: 0.35 },
+  { name: 'Trapezium', x: -0.26, y: -0.78, mag: 0.5 },
+  { name: 'Iota Ori', x: -0.32, y: -1.05, mag: 0.45 },
 ]
 
-// Index pairs into ORION_STARS forming the classic stick figure
+// Index pairs into ORION_STARS forming the complete classical depiction
 const ORION_LINES: [number, number][] = [
+  // Head + shoulders
   [0, 1], // Betelgeuse — Meissa
   [1, 2], // Meissa — Bellatrix
+  // Torso to belt
   [0, 3], // Betelgeuse — Alnitak
   [2, 5], // Bellatrix — Mintaka
+  // Belt
   [3, 4], // Alnitak — Alnilam
   [4, 5], // Alnilam — Mintaka
+  // Legs
   [3, 6], // Alnitak — Saiph
   [5, 7], // Mintaka — Rigel
+  // Raised arm + club (forks at Mu, closes at the top)
+  [0, 8], // Betelgeuse — Mu
+  [8, 9], // Mu — Nu
+  [8, 10], // Mu — Xi
+  [9, 11], // Nu — Chi1
+  [10, 12], // Xi — Chi2
+  [11, 12], // Chi1 — Chi2
+  // Shield arm + shield arc
+  [2, 17], // Bellatrix — Pi3
+  [13, 14], // Omicron1 — Omicron2
+  [14, 15], // Omicron2 — Pi1
+  [15, 16], // Pi1 — Pi2
+  [16, 17], // Pi2 — Pi3
+  [17, 18], // Pi3 — Pi4
+  [18, 19], // Pi4 — Pi5
+  [19, 20], // Pi5 — Pi6
+  // Sword hanging from the belt
+  [4, 21], // Alnilam — 42 Ori
+  [21, 22], // 42 Ori — Trapezium
+  [22, 23], // Trapezium — Iota
 ]
 
 
@@ -228,10 +274,12 @@ export function initHero() {
   // Constellation targets — right of center on wide screens so the headline
   // breathes; centered (and smaller) on narrow screens where that space
   // doesn't exist.
+  // Full figure spans roughly x ∈ [-2, 2.45], y ∈ [-1.75, 3.05] — scaled so
+  // the club and shield stay inside the frustum at z = -1.5.
   const narrow = camera.aspect < 1
-  const CONSTELLATION_SCALE = narrow ? 1.1 : 1.6
-  const cx = narrow ? 0 : 2.6
-  const cy = 0.2
+  const CONSTELLATION_SCALE = narrow ? 0.85 : 1.35
+  const cx = narrow ? 0 : 2.9
+  const cy = narrow ? -0.2 : -0.3
   for (let s = 0; s < starCount; s++) {
     const i = ambientCount + s
     const star = ORION_STARS[s]
