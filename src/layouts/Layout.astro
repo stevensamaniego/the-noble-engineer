@@ -1,0 +1,46 @@
+---
+import '../styles/global.css'
+
+interface Props {
+  title?: string
+  description?: string
+}
+
+const {
+  title = 'The Noble Engineer',
+  description = 'Technology consulting, engineering, and innovation'
+} = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <title>{title}</title>
+  </head>
+  <body class="bg-void text-text antialiased">
+    <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between backdrop-blur-md bg-void/60 border-b border-white/5">
+      <a href={`${import.meta.env.BASE_URL}`} class="text-lg font-semibold tracking-tight text-accent font-mono">
+        TNE<span class="text-text-muted">_</span>
+      </a>
+      <div class="flex gap-8 text-sm text-text-muted">
+        <a href="#work" class="hover:text-accent transition-colors">Work</a>
+        <a href="#capabilities" class="hover:text-accent transition-colors">Capabilities</a>
+        <a href="#about" class="hover:text-accent transition-colors">About</a>
+        <a href="#contact" class="hover:text-accent transition-colors">Contact</a>
+      </div>
+    </nav>
+
+    <slot />
+
+    <footer class="border-t border-white/5 px-6 py-12 text-center text-text-muted text-sm">
+      <p>&copy; {new Date().getFullYear()} The Noble Engineer. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
