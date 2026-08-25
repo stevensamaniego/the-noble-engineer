@@ -27,7 +27,6 @@ const ORION_LINES: [number, number][] = [
   [5, 7], // Mintaka — Rigel
 ]
 
-const CONSTELLATION_SCALE = 1.6
 
 // ---------------------------------------------------------------------------
 // Shaders
@@ -226,8 +225,12 @@ export function initHero() {
     isStar[i] = 0
   }
 
-  // Constellation star targets — slightly right of center so the headline breathes
-  const cx = 2.6
+  // Constellation targets — right of center on wide screens so the headline
+  // breathes; centered (and smaller) on narrow screens where that space
+  // doesn't exist.
+  const narrow = camera.aspect < 1
+  const CONSTELLATION_SCALE = narrow ? 1.1 : 1.6
+  const cx = narrow ? 0 : 2.6
   const cy = 0.2
   for (let s = 0; s < starCount; s++) {
     const i = ambientCount + s
