@@ -61,6 +61,51 @@ body {
 }
 
 /* ---------------------------------------------------------------------------
+   Preloader — circuit-trace intro (see scripts/preloader.ts). Every element
+   starts hidden via CSS so the first paint is pure void; GSAP flips strokes
+   visible only after priming their dash state.
+--------------------------------------------------------------------------- */
+/* Repeat visit this session (flag set pre-paint in Layout head) */
+.tne-revisit #preloader {
+  display: none;
+}
+
+#circuit-logo {
+  overflow: visible; /* off-board traces run past the viewBox to the screen edges */
+  filter: drop-shadow(0 0 4px rgba(0, 240, 255, 0.35));
+}
+#circuit-logo .cdraw {
+  visibility: hidden;
+  stroke: var(--color-accent);
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+#circuit-logo .pl-trace {
+  visibility: hidden;
+  stroke-width: 1.5;
+  fill: none;
+  stroke-linecap: round;
+}
+#circuit-logo .pl-node {
+  opacity: 0;
+  fill: var(--color-accent);
+  filter: drop-shadow(0 0 6px var(--color-accent));
+}
+#circuit-logo .pl-figure {
+  opacity: 0;
+  fill: var(--color-text);
+}
+#circuit-logo .pl-wordmark {
+  opacity: 0;
+  fill: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.32em;
+}
+
+/* ---------------------------------------------------------------------------
    Nav
 --------------------------------------------------------------------------- */
 .nav-link {

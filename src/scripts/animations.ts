@@ -3,6 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
 import Lenis from 'lenis'
 import { logoEntrance } from './hero'
+import { preloaderDone } from './preloader'
 
 gsap.registerPlugin(ScrollTrigger, SplitText)
 
@@ -21,7 +22,9 @@ export function initAnimations() {
   }
 
   const lenis = initSmoothScroll()
-  initLoadSequence()
+  // Hero entrance waits for the circuit-trace preloader to start its reveal
+  // (resolves immediately when the preloader is skipped)
+  preloaderDone.then(initLoadSequence)
   initHeadingReveals()
   initSectionReveals()
   initParallax()

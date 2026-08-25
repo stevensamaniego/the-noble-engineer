@@ -25,14 +25,112 @@ const year = new Date().getFullYear()
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@1,400;1,500;1,600&display=swap" rel="stylesheet" />
     <title>{title}</title>
+    <script is:inline>
+      // Repeat visit this session? Flag the root before first paint so CSS can
+      // drop the preloader with zero flash (preloader.ts also checks this).
+      try { if (sessionStorage.getItem('tne-visited')) document.documentElement.classList.add('tne-revisit') } catch (e) {}
+    </script>
     <noscript>
       <style>
         /* No JS: never leave content hidden behind animation initial states */
         .opacity-0 { opacity: 1 !important; }
+        #preloader { display: none !important; }
       </style>
     </noscript>
   </head>
   <body class="bg-void text-text antialiased">
+    <!-- Circuit-trace intro — the TNE tree draws itself as a live PCB, then the
+         veil lifts onto the hero. Pure SVG + GSAP (see scripts/preloader.ts);
+         skipped on repeat visits within a session. -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-void flex items-center justify-center" aria-hidden="true">
+      <div id="preloader-emblem">
+        <svg id="circuit-logo" viewBox="0 0 400 480" class="w-72 md:w-96" fill="none">
+          <defs>
+            <linearGradient id="pl-fade-l" gradientUnits="userSpaceOnUse" x1="120" y1="0" x2="-260" y2="0">
+              <stop offset="0" stop-color="#00f0ff" stop-opacity="0.55" />
+              <stop offset="1" stop-color="#00f0ff" stop-opacity="0" />
+            </linearGradient>
+            <linearGradient id="pl-fade-r" gradientUnits="userSpaceOnUse" x1="280" y1="0" x2="660" y2="0">
+              <stop offset="0" stop-color="#00f0ff" stop-opacity="0.55" />
+              <stop offset="1" stop-color="#00f0ff" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+
+          <!-- Off-board traces — drawn after the tree, running past the viewport
+               edges like the mark is soldered into a larger circuit -->
+          <g>
+            <line class="pl-trace" x1="50" y1="208" x2="-260" y2="208" stroke="url(#pl-fade-l)" />
+            <line class="pl-trace" x1="102" y1="108" x2="-260" y2="108" stroke="url(#pl-fade-l)" />
+            <line class="pl-trace" x1="350" y1="250" x2="660" y2="250" stroke="url(#pl-fade-r)" />
+            <line class="pl-trace" x1="272" y1="72" x2="660" y2="72" stroke="url(#pl-fade-r)" />
+            <line class="pl-trace" x1="48" y1="412" x2="-260" y2="412" stroke="url(#pl-fade-l)" />
+            <line class="pl-trace" x1="352" y1="412" x2="660" y2="412" stroke="url(#pl-fade-r)" />
+          </g>
+
+          <!-- Trunk — one signal racing bottom → top -->
+          <path class="cdraw pl-trunk" d="M201 410 L200 348 L196 300 L193 252 L192 204 L193 156 L195 116 L197 92" />
+
+          <!-- Junction nodes where branches fork off the trunk -->
+          <g>
+            <circle class="pl-node pl-junction" cx="196" cy="300" r="2.2" />
+            <circle class="pl-node pl-junction" cx="193" cy="252" r="2.2" />
+            <circle class="pl-node pl-junction" cx="192" cy="204" r="2.2" />
+            <circle class="pl-node pl-junction" cx="193" cy="156" r="2.2" />
+            <circle class="pl-node pl-junction" cx="195" cy="116" r="2.2" />
+          </g>
+
+          <!-- Branches, bottom pair first — angular forks echoing the logo's
+               jagged limbs, endpoint nodes pulse as each trace completes -->
+          <g class="pl-branch">
+            <path class="cdraw" d="M196 300 L248 272 L298 282 L350 250" />
+            <path class="cdraw" d="M298 282 L320 310" />
+            <circle class="pl-node" cx="350" cy="250" r="4" />
+            <circle class="pl-node" cx="320" cy="310" r="3" />
+          </g>
+          <g class="pl-branch">
+            <path class="cdraw" d="M193 252 L148 224 L100 232 L50 208" />
+            <path class="cdraw" d="M100 232 L78 254" />
+            <circle class="pl-node" cx="50" cy="208" r="4" />
+            <circle class="pl-node" cx="78" cy="254" r="3" />
+          </g>
+          <g class="pl-branch">
+            <path class="cdraw" d="M192 204 L240 178 L278 184 L316 158" />
+            <circle class="pl-node" cx="316" cy="158" r="3.5" />
+          </g>
+          <g class="pl-branch">
+            <path class="cdraw" d="M193 156 L156 128 L128 132 L102 108" />
+            <circle class="pl-node" cx="102" cy="108" r="3.5" />
+          </g>
+          <g class="pl-branch">
+            <path class="cdraw" d="M195 116 L228 90 L252 94 L272 72" />
+            <circle class="pl-node" cx="272" cy="72" r="3" />
+          </g>
+          <g class="pl-branch">
+            <path class="cdraw" d="M195 116 L170 92 L154 70" />
+            <circle class="pl-node" cx="154" cy="70" r="3" />
+          </g>
+          <g class="pl-branch">
+            <path class="cdraw" d="M197 92 L188 64" />
+            <path class="cdraw" d="M197 92 L212 58" />
+            <circle class="pl-node" cx="188" cy="64" r="2.5" />
+            <circle class="pl-node" cx="212" cy="58" r="2.5" />
+          </g>
+
+          <!-- The engineer — seated at the base with a laptop, fades in last -->
+          <g class="pl-figure">
+            <circle cx="227" cy="376" r="5.5" />
+            <path d="M222 382 C214 385 210 393 209 401 L208 410 L232 410 C236 410 240 406 241 401 L250 403 L251 398 L241 396 C239 388 231 383 222 382 Z" />
+            <path d="M243 393 L252 387 L254 391 L246 397 Z" />
+          </g>
+
+          <!-- Baseline rule (drawn center-out) + wordmark -->
+          <line class="cdraw pl-rule" x1="200" y1="412" x2="48" y2="412" />
+          <line class="cdraw pl-rule" x1="200" y1="412" x2="352" y2="412" />
+          <text class="pl-wordmark" x="202" y="452" text-anchor="middle">THE NOBLE ENGINEER</text>
+        </svg>
+      </div>
+    </div>
+
     <div id="cursor-glow" aria-hidden="true"></div>
 
     <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-3 flex items-center justify-between backdrop-blur-md bg-void/60 border-b border-white/5 opacity-0">
@@ -69,5 +167,10 @@ const year = new Date().getFullYear()
         </div>
       </div>
     </footer>
+
+    <script>
+      import { initPreloader } from '../scripts/preloader'
+      initPreloader()
+    </script>
   </body>
 </html>
