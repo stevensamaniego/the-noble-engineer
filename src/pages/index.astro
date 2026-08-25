@@ -23,21 +23,43 @@ import Layout from '../layouts/Layout.astro'
     </div>
   </section>
 
-  <!-- Keyword marquee -->
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track">
-      <span>Custom Software</span><span>Infrastructure</span><span>System Integration</span><span>IT Strategy</span>
+  <!-- Curiosity gap — first line peeks above the fold edge (negative margin pulls
+       it into the last ~1.5rem of the hero viewport, below the scroll hint), the
+       resolution only reveals on scroll. Zeigarnik Effect: open loop → must scroll. -->
+  <section class="relative z-10 -mt-6 px-6 pb-32 md:pb-44" aria-label="Why engineering matters">
+    <div class="max-w-6xl mx-auto">
+      <p class="text-[clamp(2rem,5vw,4rem)] font-extrabold tracking-tight leading-[1.12] text-text">
+        Most companies don't have a technology problem—
+      </p>
+      <p class="text-[clamp(2rem,5vw,4rem)] font-extrabold tracking-tight leading-[1.12] text-accent mt-8 md:mt-12" data-animate="fade-up">
+        —they have an engineering problem.
+      </p>
     </div>
-    <div class="marquee-track" aria-hidden="true">
-      <span>Custom Software</span><span>Infrastructure</span><span>System Integration</span><span>IT Strategy</span>
+  </section>
+
+  <!-- Problem space — the pain before the cure. Loss aversion + pattern
+       recognition: the visitor sees their own history reflected back. -->
+  <section id="problem" class="relative px-6 py-28 md:py-40 overflow-hidden">
+    <div class="max-w-7xl mx-auto">
+      <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-14 md:mb-20 opacity-0" data-split>
+        You've been here before.
+      </h2>
+      <div class="max-w-3xl space-y-8 md:space-y-10" data-animate-group data-stagger="0.15">
+        <p class="text-xl md:text-2xl text-text-muted leading-relaxed">The consultant who billed six figures and left you with a slide deck.</p>
+        <p class="text-xl md:text-2xl text-text-muted leading-relaxed">The vendor who promised seamless integration and delivered a mess.</p>
+        <p class="text-xl md:text-2xl text-text-muted leading-relaxed">The dev shop that built it fast, disappeared faster, and left no one who could maintain it.</p>
+      </div>
+      <p class="serif-voice text-2xl md:text-[2rem] text-text mt-24 md:mt-36" data-animate="fade-up">
+        There's a better way to build.
+      </p>
     </div>
-  </div>
+  </section>
 
   <!-- Services — editorial intro -->
   <section id="services" class="relative pt-36 md:pt-48 pb-20 px-6 overflow-hidden">
     <div class="pointer-events-none absolute -right-40 top-24 w-[500px] h-[500px] rounded-full bg-accent/[0.03] blur-3xl" data-parallax="0.25"></div>
     <div class="max-w-7xl mx-auto">
-      <p class="font-mono text-xs tracking-[0.3em] uppercase text-accent mb-6" data-animate="fade-up">01 — 04 &nbsp;/&nbsp; Services</p>
+      <p class="font-mono text-xs tracking-[0.3em] uppercase text-text-muted mb-6" data-animate="fade-up">01 — 04 &nbsp;/&nbsp; Services</p>
       <h2 class="text-[clamp(2.6rem,7vw,6rem)] font-extrabold tracking-tight leading-[1.03] max-w-5xl opacity-0" data-split>
         The systems your business runs on, built by someone who has run them.
       </h2>
@@ -60,8 +82,8 @@ import Layout from '../layouts/Layout.astro'
     </svg>
     <div class="max-w-7xl mx-auto grid grid-cols-12 gap-x-8 gap-y-12 items-start relative pt-16 md:pt-24">
       <div class="col-span-12 md:col-span-7">
-        <p class="font-mono text-xs tracking-[0.3em] uppercase text-accent mb-5" data-animate="fade-up">Custom Software</p>
-        <h3 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-8 opacity-0" data-split>
+        <p class="font-mono text-xs tracking-[0.3em] uppercase text-text-muted mb-5" data-animate="fade-up">Custom Software</p>
+        <h3 class="text-[clamp(2.5rem,6.5vw,7rem)] font-extrabold tracking-tight leading-[1.02] mb-8 opacity-0" data-split>
           Software that ships — and stays shipped.
         </h3>
         <p class="text-text-muted text-lg leading-relaxed max-w-xl" data-animate="fade-up">
@@ -80,33 +102,17 @@ import Layout from '../layouts/Layout.astro'
     <hr class="section-rule max-w-7xl mx-auto mt-24 md:mt-32" data-rule />
   </section>
 
-  <!-- 02 — Infrastructure (mirrored) -->
-  <section class="relative px-6 py-28 md:py-40 overflow-hidden">
+  <!-- 02 — Infrastructure (pattern interrupt: centered, single column, air) -->
+  <section class="relative px-6 py-32 md:py-48 overflow-hidden">
     <span class="service-index right-2 md:right-6" data-parallax="0.12" aria-hidden="true">02</span>
-    <svg class="service-accent hidden md:block left-[7%] top-[18%] w-56" viewBox="0 0 200 160" fill="none" stroke-width="1" data-draw aria-hidden="true">
-      <polyline points="20,30 20,130 180,130 180,60" />
-      <line x1="20" y1="80" x2="100" y2="80" /><line x1="100" y1="80" x2="100" y2="130" />
-      <circle cx="20" cy="30" r="4" /><circle cx="20" cy="130" r="3" /><circle cx="180" cy="130" r="3" />
-      <circle cx="180" cy="60" r="4.5" /><circle cx="100" cy="80" r="3" />
-    </svg>
-    <div class="max-w-7xl mx-auto grid grid-cols-12 gap-x-8 gap-y-12 items-start relative pt-16 md:pt-24">
-      <div class="col-span-12 md:col-span-7 md:col-start-6 md:order-2">
-        <p class="font-mono text-xs tracking-[0.3em] uppercase text-accent mb-5" data-animate="fade-up">Infrastructure</p>
-        <h3 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-8 opacity-0" data-split>
-          Infrastructure without drama.
-        </h3>
-        <p class="text-text-muted text-lg leading-relaxed max-w-xl" data-animate="fade-up">
-          Data center builds, cloud migrations, network architecture, and hybrid deployments — designed to scale without surprises. From rack-and-stack to production monitoring, the kind of infrastructure you deploy, maintain, and stand behind.
-        </p>
-      </div>
-      <div class="col-span-12 md:col-span-4 md:order-1 md:pt-10">
-        <ul class="ledger" data-animate-group>
-          <li class="ledger-item"><span class="ledger-num">/01</span><span class="ledger-label">Data center design</span></li>
-          <li class="ledger-item"><span class="ledger-num">/02</span><span class="ledger-label">Cloud &amp; hybrid migration</span></li>
-          <li class="ledger-item"><span class="ledger-num">/03</span><span class="ledger-label">Network architecture</span></li>
-          <li class="ledger-item"><span class="ledger-num">/04</span><span class="ledger-label">High availability</span></li>
-        </ul>
-      </div>
+    <div class="max-w-3xl mx-auto text-center relative pt-16 md:pt-24">
+      <p class="font-mono text-xs tracking-[0.3em] uppercase text-text-muted mb-5" data-animate="fade-up">Infrastructure</p>
+      <h3 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-10 opacity-0" data-split>
+        Infrastructure without drama.
+      </h3>
+      <p class="text-text-muted text-lg md:text-xl leading-relaxed" data-animate="fade-up">
+        Data centers. Cloud migrations. Network architecture. Designed to scale, built to be maintained, still running long after the launch.
+      </p>
     </div>
     <hr class="section-rule max-w-7xl mx-auto mt-24 md:mt-32" data-rule />
   </section>
@@ -114,16 +120,15 @@ import Layout from '../layouts/Layout.astro'
   <!-- 03 — System Integration -->
   <section class="relative px-6 py-28 md:py-40 overflow-hidden">
     <span class="service-index left-2 md:left-6" data-parallax="0.12" aria-hidden="true">03</span>
-    <svg class="service-accent hidden md:block right-[6%] top-[16%] w-72" viewBox="0 0 260 160" fill="none" stroke-width="1" data-draw aria-hidden="true">
-      <polyline points="20,40 48,70 20,100" />
-      <polyline points="240,50 212,80 240,110" />
-      <path class="flow-line" d="M48,70 C110,70 150,80 212,80" />
-      <circle cx="20" cy="40" r="3.5" /><circle cx="48" cy="70" r="4" /><circle cx="20" cy="100" r="3.5" />
-      <circle cx="240" cy="50" r="3.5" /><circle cx="212" cy="80" r="4" /><circle cx="240" cy="110" r="3.5" />
-    </svg>
+    <!-- Two systems, one animated bridge — CSS only -->
+    <div class="service-bridge hidden md:flex right-[6%] top-[22%] w-72" data-animate="fade-up" aria-hidden="true">
+      <span class="bridge-node"></span>
+      <span class="bridge-track"><span class="bridge-pulse"></span></span>
+      <span class="bridge-node"></span>
+    </div>
     <div class="max-w-7xl mx-auto grid grid-cols-12 gap-x-8 gap-y-12 items-start relative pt-16 md:pt-24">
       <div class="col-span-12 md:col-span-7">
-        <p class="font-mono text-xs tracking-[0.3em] uppercase text-accent mb-5" data-animate="fade-up">System Integration</p>
+        <p class="font-mono text-xs tracking-[0.3em] uppercase text-text-muted mb-5" data-animate="fade-up">System Integration</p>
         <h3 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-8 opacity-0" data-split>
           Make the systems you already own talk to each other.
         </h3>
@@ -153,8 +158,8 @@ import Layout from '../layouts/Layout.astro'
     </svg>
     <div class="max-w-7xl mx-auto grid grid-cols-12 gap-x-8 gap-y-12 items-start relative pt-16 md:pt-24">
       <div class="col-span-12 md:col-span-7 md:col-start-6 md:order-2">
-        <p class="font-mono text-xs tracking-[0.3em] uppercase text-accent mb-5" data-animate="fade-up">IT Strategy</p>
-        <h3 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-8 opacity-0" data-split>
+        <p class="font-mono text-xs tracking-[0.3em] uppercase text-text-muted mb-5" data-animate="fade-up">IT Strategy</p>
+        <h3 class="text-3xl md:text-[2.75rem] font-light tracking-tight leading-[1.15] mb-8 opacity-0" data-split>
           Strategy from the server room, not the slide deck.
         </h3>
         <p class="text-text-muted text-lg leading-relaxed max-w-xl" data-animate="fade-up">
@@ -172,8 +177,30 @@ import Layout from '../layouts/Layout.astro'
     </div>
   </section>
 
+  <!-- Social proof — evidence, not claims. Serif italic voice, thin accent
+       borders (one of the few sanctioned cyan moments on the page). -->
+  <section id="proof" class="relative py-32 md:py-44 px-6 overflow-hidden bg-surface">
+    <div class="max-w-7xl mx-auto">
+      <p class="font-mono text-xs tracking-[0.3em] uppercase text-text-muted mb-16 md:mb-20" data-animate="fade-up">From the field</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-14 md:gap-10" data-animate-group data-stagger="0.15">
+        <blockquote class="quote">
+          <p class="serif-voice text-xl md:text-[1.35rem] leading-relaxed text-text">&ldquo;We went from paper timesheets to a production platform in three weeks. Still running, zero downtime.&rdquo;</p>
+          <footer class="quote-attr">IT Director, Construction</footer>
+        </blockquote>
+        <blockquote class="quote">
+          <p class="serif-voice text-xl md:text-[1.35rem] leading-relaxed text-text">&ldquo;Finally, someone who speaks infrastructure AND code. We stopped needing two vendors.&rdquo;</p>
+          <footer class="quote-attr">VP Operations, Manufacturing</footer>
+        </blockquote>
+        <blockquote class="quote">
+          <p class="serif-voice text-xl md:text-[1.35rem] leading-relaxed text-text">&ldquo;The first consultant who built what they promised, documented it, and actually stuck around.&rdquo;</p>
+          <footer class="quote-attr">COO, Professional Services</footer>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
   <!-- About — 3D logo centerpiece + narrative -->
-  <section id="about" class="relative py-32 md:py-44 px-6 overflow-hidden bg-surface">
+  <section id="about" class="relative py-32 md:py-44 px-6 overflow-hidden">
     <div class="pointer-events-none absolute -left-40 top-20 w-[450px] h-[450px] rounded-full bg-accent-secondary/[0.04] blur-3xl" data-parallax="0.15"></div>
     <div class="max-w-7xl mx-auto grid grid-cols-12 gap-x-8 gap-y-16 items-center">
       <div class="col-span-12 md:col-span-5">
@@ -182,15 +209,15 @@ import Layout from '../layouts/Layout.astro'
         </div>
       </div>
       <div class="col-span-12 md:col-span-6 md:col-start-7">
-        <p class="font-mono text-xs tracking-[0.3em] uppercase text-accent mb-5" data-animate="fade-up">About</p>
+        <p class="font-mono text-xs tracking-[0.3em] uppercase text-text-muted mb-5" data-animate="fade-up">About</p>
         <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-8 opacity-0" data-split>
           Twenty years of building.
         </h2>
-        <p class="text-text-muted text-lg leading-relaxed mb-5" data-animate="fade-up">
-          Started racking servers and running cable. Worked up to lead engineer — designing data centers, building networks, and architecting full application stacks from the ground up.
+        <p class="serif-voice text-lg md:text-xl leading-relaxed text-text/85 mb-6" data-animate="fade-up">
+          The first server rack I ever built was in a closet with no AC. Fifteen years later, I was designing data centers for a global brand — redundant power, redundant cooling, redundant everything. The closet taught me more.
         </p>
-        <p class="text-text-muted text-lg leading-relaxed mb-12" data-animate="fade-up" data-delay="0.1">
-          Now that experience goes into production software and IT operations for companies that need real solutions — not consultants who bill by the hour and leave you with a PDF.
+        <p class="serif-voice text-lg md:text-xl leading-relaxed text-text/85 mb-12" data-animate="fade-up" data-delay="0.1">
+          That's the through-line: build real things, learn what breaks, carry those lessons forward. Every platform I ship, every network I design, every system I integrate — it's twenty years of knowing what actually goes wrong when you cut corners.
         </p>
         <div class="grid grid-cols-3 gap-6" data-animate-group>
           <div>
@@ -198,11 +225,11 @@ import Layout from '../layouts/Layout.astro'
             <p class="stat-label mt-2">Years engineering</p>
           </div>
           <div>
-            <p class="font-mono text-accent text-lg md:text-xl mt-3 md:mt-5">DC&nbsp;→&nbsp;SaaS</p>
+            <p class="font-mono text-text text-lg md:text-xl mt-3 md:mt-5">DC&nbsp;→&nbsp;SaaS</p>
             <p class="stat-label mt-2">Data center to cloud</p>
           </div>
           <div>
-            <p class="font-mono text-accent text-lg md:text-xl mt-3 md:mt-5">Lead&nbsp;Eng</p>
+            <p class="font-mono text-text text-lg md:text-xl mt-3 md:mt-5">Lead&nbsp;Eng</p>
             <p class="stat-label mt-2">Background</p>
           </div>
         </div>
@@ -217,15 +244,18 @@ import Layout from '../layouts/Layout.astro'
       <div class="contact-ring w-80 h-80" style="animation-delay: 2s"></div>
     </div>
     <div class="max-w-6xl mx-auto relative">
-      <p class="font-mono text-xs tracking-[0.3em] uppercase text-accent mb-6" data-animate="fade-up">Contact</p>
+      <p class="font-mono text-xs tracking-[0.3em] uppercase text-text-muted mb-6" data-animate="fade-up">Contact</p>
+      <p class="font-mono text-sm tracking-[0.12em] text-accent mb-8" data-animate="fade-up" data-delay="0.05">
+        Currently taking on two new engagements.
+      </p>
       <h2 class="text-[clamp(2.6rem,7vw,5.5rem)] font-extrabold tracking-tight leading-[1.03] max-w-4xl mb-14 opacity-0" data-split>
         Let's build something that lasts.
       </h2>
       <a href="mailto:steven@thenobleengineer.com" class="email-link" data-magnetic data-animate="fade-up">
         steven@thenobleengineer.com
       </a>
-      <p class="font-mono text-xs tracking-[0.2em] uppercase text-text-muted mt-10" data-animate="fade-up" data-delay="0.15">
-        Direct line to the engineer — no sales team, no ticket queue.
+      <p class="text-text-muted text-base md:text-lg mt-10" data-animate="fade-up" data-delay="0.15">
+        Or just ask a question — no pitch, no follow-up sequence.
       </p>
     </div>
   </section>

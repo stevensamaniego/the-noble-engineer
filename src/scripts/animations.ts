@@ -164,7 +164,7 @@ function initSectionReveals() {
         y: 0,
         scale: 1,
         duration: 0.9,
-        stagger: 0.12,
+        stagger: parseFloat(group.dataset.stagger || '0.12'),
         ease: 'power3.out',
         scrollTrigger: { trigger: group, start: 'top 82%' },
       }
@@ -192,15 +192,13 @@ function initParallax() {
 
 // ---------------------------------------------------------------------------
 // Constellation accents: strokes draw themselves in as the section scrolls
-// into view; nodes pop after their lines arrive. The animated flow-line keeps
-// its own CSS dash animation, so it's excluded from the draw effect.
+// into view; nodes pop after their lines arrive.
 function initDrawAccents() {
   document.querySelectorAll<SVGSVGElement>('[data-draw]').forEach((svg) => {
     const strokes = Array.from(
-      svg.querySelectorAll<SVGGeometryElement>('path:not(.flow-line), line, polyline')
+      svg.querySelectorAll<SVGGeometryElement>('path, line, polyline')
     )
     const nodes = Array.from(svg.querySelectorAll<SVGCircleElement>('circle'))
-    const flow = svg.querySelector<SVGGeometryElement>('.flow-line')
 
     const tl = gsap.timeline({
       scrollTrigger: { trigger: svg.closest('section') || svg, start: 'top 70%' },
@@ -223,9 +221,6 @@ function initDrawAccents() {
       { scale: 0, transformOrigin: 'center', opacity: 0, duration: 0.5, stagger: 0.08, ease: 'back.out(2.5)' },
       0.5
     )
-    if (flow) {
-      tl.from(flow, { opacity: 0, duration: 0.8 }, 1)
-    }
   })
 }
 

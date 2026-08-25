@@ -13,6 +13,15 @@
 
   --font-display: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+  --font-serif: 'Playfair Display', Georgia, serif;
+}
+
+/* Serif italic voice — reserved for human/emotional moments (quotes, the
+   problem-section resolution, the about narrative). Mono is for data,
+   sans for structure, serif for feeling. */
+.serif-voice {
+  font-family: var(--font-serif);
+  font-style: italic;
 }
 
 /* No universal reset here: Tailwind preflight covers it, and un-layered
@@ -63,7 +72,7 @@ body {
   transition: color 0.3s ease;
 }
 .nav-link:hover {
-  color: var(--color-accent);
+  color: var(--color-text);
 }
 .nav-link::after {
   content: '';
@@ -113,7 +122,7 @@ body {
   transition: background-color 0.4s ease;
 }
 a:hover .logo-nav {
-  background-color: var(--color-accent);
+  background-color: #ffffff;
 }
 @keyframes logo-sway {
   0%, 100% { transform: rotateY(-14deg); }
@@ -185,41 +194,6 @@ a:hover .logo-nav {
 }
 
 /* ---------------------------------------------------------------------------
-   Marquee — slow keyword strip between hero and services
---------------------------------------------------------------------------- */
-.marquee {
-  display: flex;
-  overflow: hidden;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  user-select: none;
-}
-.marquee-track {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
-  padding: 1.1rem 0;
-  animation: marquee 48s linear infinite;
-}
-.marquee-track > span {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--color-text-muted) 65%, transparent);
-  padding: 0 1.75rem;
-}
-.marquee-track > span::after {
-  content: '✦';
-  color: var(--color-accent-dim);
-  margin-left: 3.5rem;
-}
-@keyframes marquee {
-  to { transform: translateX(-100%); }
-}
-
-/* ---------------------------------------------------------------------------
    Service sections — editorial layout, oversized outline indices,
    constellation accents, ledger lists
 --------------------------------------------------------------------------- */
@@ -230,7 +204,7 @@ a:hover .logo-nav {
   font-size: clamp(9rem, 24vw, 22rem);
   line-height: 0.8;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(0, 240, 255, 0.09);
+  -webkit-text-stroke: 1px rgba(0, 240, 255, 0.05);
   pointer-events: none;
   user-select: none;
 }
@@ -238,20 +212,45 @@ a:hover .logo-nav {
 .service-accent {
   position: absolute;
   pointer-events: none;
-  stroke: var(--color-accent);
+  stroke: var(--color-text-muted);
   opacity: 0.35;
 }
 .service-accent circle {
-  fill: var(--color-accent);
+  fill: var(--color-text-muted);
   stroke: none;
 }
-.service-accent .flow-line {
-  stroke: var(--color-accent-secondary);
-  stroke-dasharray: 3 9;
-  animation: dash-flow 1.4s linear infinite;
+
+/* Section 03 — two endpoints bridged by a traveling pulse (CSS only) */
+.service-bridge {
+  position: absolute;
+  align-items: center;
+  pointer-events: none;
 }
-@keyframes dash-flow {
-  to { stroke-dashoffset: -12; }
+.bridge-node {
+  flex-shrink: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.08);
+}
+.bridge-track {
+  position: relative;
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+.bridge-pulse {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 38%;
+  background: linear-gradient(90deg, transparent, var(--color-accent-secondary), transparent);
+  animation: bridge-pulse 2.8s ease-in-out infinite;
+}
+@keyframes bridge-pulse {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(290%); }
 }
 
 .ledger {
@@ -274,7 +273,7 @@ a:hover .logo-nav {
   bottom: -1px;
   height: 1px;
   width: 100%;
-  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-secondary));
+  background: rgba(255, 255, 255, 0.35);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
@@ -301,15 +300,31 @@ a:hover .logo-nav {
   color: var(--color-text);
 }
 .ledger-item:hover .ledger-num {
-  color: var(--color-accent);
+  color: var(--color-text);
 }
 
 .section-rule {
   display: block;
   height: 1px;
   border: none;
-  background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.25), rgba(123, 97, 255, 0.25), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
   transform: scaleX(0);
+}
+
+/* ---------------------------------------------------------------------------
+   Social proof — quotes with a thin accent spine (a sanctioned cyan moment)
+--------------------------------------------------------------------------- */
+.quote {
+  border-left: 2px solid var(--color-accent);
+  padding-left: 1.5rem;
+}
+.quote-attr {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-top: 1.5rem;
 }
 
 /* ---------------------------------------------------------------------------
@@ -319,8 +334,7 @@ a:hover .logo-nav {
   font-weight: 800;
   font-size: clamp(3rem, 6vw, 5rem);
   line-height: 1;
-  color: var(--color-accent);
-  text-shadow: 0 0 30px var(--color-glow);
+  color: var(--color-text);
   font-variant-numeric: tabular-nums;
 }
 .stat-label {
@@ -336,7 +350,7 @@ a:hover .logo-nav {
 --------------------------------------------------------------------------- */
 .contact-ring {
   position: absolute;
-  border: 1px solid color-mix(in srgb, var(--color-accent) 25%, transparent);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 50%;
   animation: ring-pulse 4s ease-out infinite;
 }
@@ -392,9 +406,8 @@ a:hover .logo-nav {
   .glitch-on::before,
   .glitch-on::after,
   .contact-ring,
-  .marquee-track,
   .logo-nav,
-  .service-accent .flow-line {
+  .bridge-pulse {
     animation: none;
   }
   #cursor-glow {
