@@ -177,13 +177,8 @@ import Layout from '../layouts/Layout.astro'
     <div class="pointer-events-none absolute -left-40 top-20 w-[450px] h-[450px] rounded-full bg-accent-secondary/[0.04] blur-3xl" data-parallax="0.15"></div>
     <div class="max-w-7xl mx-auto grid grid-cols-12 gap-x-8 gap-y-16 items-center">
       <div class="col-span-12 md:col-span-5">
-        <div class="logo-scene relative max-w-sm mx-auto md:mx-0" data-logo-scene>
-          <div class="logo-glow" aria-hidden="true"></div>
-          <div class="logo-stack" data-mask-reveal>
-            <div class="logo-layer logo-mark logo-layer-back" aria-hidden="true"></div>
-            <div class="logo-layer logo-mark logo-layer-mid" aria-hidden="true"></div>
-            <div class="logo-layer logo-mark logo-layer-front" role="img" aria-label="The Noble Engineer — tree logo"></div>
-          </div>
+        <div class="logo-scene relative max-w-sm mx-auto md:mx-0">
+          <canvas id="logo-canvas" class="absolute inset-0 w-full h-full" role="img" aria-label="The Noble Engineer — tree logo"></canvas>
         </div>
       </div>
       <div class="col-span-12 md:col-span-6 md:col-start-7">
@@ -238,10 +233,12 @@ import Layout from '../layouts/Layout.astro'
 
 <script>
   import { initHero } from '../scripts/hero'
+  import { initLogoScene } from '../scripts/logo-scene'
   import { initAnimations } from '../scripts/animations'
   import { initInteractions } from '../scripts/interactions'
 
   initHero()
+  initLogoScene()
   initAnimations()
   initInteractions()
 </script>

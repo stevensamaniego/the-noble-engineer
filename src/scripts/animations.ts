@@ -25,7 +25,6 @@ export function initAnimations() {
   initParallax()
   initDrawAccents()
   initSectionRules()
-  initMaskReveals()
   initCounters()
   initNavHighlight()
   initScrollProgress()
@@ -240,27 +239,6 @@ function initSectionRules() {
       ease: 'power3.inOut',
       scrollTrigger: { trigger: el, start: 'top 92%' },
     })
-  })
-}
-
-// ---------------------------------------------------------------------------
-// Mask reveals: the About logo wipes upward from the ground line — the tree
-// "grows" into place as the section scrolls in.
-function initMaskReveals() {
-  document.querySelectorAll<HTMLElement>('[data-mask-reveal]').forEach((el) => {
-    gsap.fromTo(
-      el,
-      { clipPath: 'inset(100% 0% 0% 0%)' },
-      {
-        clipPath: 'inset(0% 0% 0% 0%)',
-        duration: 1.8,
-        ease: 'power3.inOut',
-        scrollTrigger: { trigger: el, start: 'top 78%' },
-        // clip-path flattens preserve-3d children — drop it once revealed so
-        // the layered logo regains its depth
-        clearProps: 'clipPath',
-      }
-    )
   })
 }
 

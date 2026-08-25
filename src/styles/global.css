@@ -87,8 +87,8 @@ body {
 /* ---------------------------------------------------------------------------
    Logo — masked treatment of the transparent artwork. The mark is painted via
    mask-image so it can be recolored freely. logo-tne-mark.png is the tree
-   alone (nav/footer scale); logo-tne-white.png keeps the full wordmark for
-   the About centerpiece.
+   alone (nav/footer scale); the About centerpiece is a Three.js scene
+   (logo-scene.ts) that textures logo-tne-white.png directly.
 --------------------------------------------------------------------------- */
 .logo-mark {
   display: block;
@@ -102,11 +102,6 @@ body {
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: center;
 }
-.logo-layer {
-  mask-image: url('/logo-tne-white.png');
-  -webkit-mask-image: url('/logo-tne-white.png');
-}
-
 /* Nav version: small, gently swaying in 3D, cyan on hover */
 .logo-nav-scene {
   perspective: 400px;
@@ -125,54 +120,11 @@ a:hover .logo-nav {
   50% { transform: rotateY(14deg); }
 }
 
-/* About centerpiece: true 3D stack — three masked layers at different depths,
-   tilted by pointer position via --rx / --ry custom properties. */
+/* About centerpiece: the Three.js emblem scene (logo-scene.ts) renders into a
+   canvas filling this square container — kept square so the glow and pointer
+   tilt have headroom around the artwork. */
 .logo-scene {
-  perspective: 1100px;
-  animation: logo-drift 9s ease-in-out infinite;
-}
-.logo-stack {
-  position: relative;
-  transform-style: preserve-3d;
-  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-  will-change: transform;
-  aspect-ratio: 1160 / 1106;
-}
-.logo-layer {
-  position: absolute;
-  inset: 0;
-}
-.logo-layer-front {
-  background-color: #f2f2f8;
-  transform: translateZ(0);
-}
-.logo-layer-mid {
-  background-color: var(--color-accent);
-  opacity: 0.5;
-  filter: blur(3px);
-  transform: translateZ(-45px);
-}
-.logo-layer-back {
-  background-color: var(--color-accent-secondary);
-  opacity: 0.4;
-  filter: blur(9px);
-  transform: translateZ(-90px);
-}
-.logo-glow {
-  position: absolute;
-  inset: -15%;
-  z-index: -1;
-  background: radial-gradient(circle at 50% 55%, rgba(0, 240, 255, 0.1) 0%, rgba(123, 97, 255, 0.06) 40%, transparent 70%);
-  animation: glow-pulse 6s ease-in-out infinite;
-  pointer-events: none;
-}
-@keyframes logo-drift {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-14px); }
-}
-@keyframes glow-pulse {
-  0%, 100% { opacity: 0.7; }
-  50% { opacity: 1; }
+  aspect-ratio: 1 / 1;
 }
 
 /* ---------------------------------------------------------------------------
@@ -442,8 +394,6 @@ a:hover .logo-nav {
   .contact-ring,
   .marquee-track,
   .logo-nav,
-  .logo-scene,
-  .logo-glow,
   .service-accent .flow-line {
     animation: none;
   }

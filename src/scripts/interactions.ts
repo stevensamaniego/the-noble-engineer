@@ -5,7 +5,6 @@ export function initInteractions() {
   if (!isTouch) {
     initCursorGlow()
     if (!prefersReducedMotion) {
-      initLogoScene()
       initMagnetic()
     }
   }
@@ -54,65 +53,6 @@ function initCursorGlow() {
     glow.classList.remove('is-visible')
     cancelAnimationFrame(rafId)
     running = false
-  })
-}
-
-// ---------------------------------------------------------------------------
-// About logo: the layered mark tilts toward the pointer in true 3D. Rotation
-// targets are lerped in rAF and written as CSS custom properties consumed by
-// .logo-stack — the layer translateZ offsets do the parallax for free.
-function initLogoScene() {
-  const scene = document.querySelector<HTMLElement>('[data-logo-scene]')
-  if (!scene) return
-  const stack = scene.querySelector<HTMLElement>('.logo-stack')
-  if (!stack) return
-
-  const MAX_TILT = 14
-  let targetRx = 0
-  let targetRy = 0
-  let rx = 0
-  let ry = 0
-  let rafId = 0
-  let running = false
-
-  const tick = () => {
-    rx += (targetRx - rx) * 0.08
-    ry += (targetRy - ry) * 0.08
-    stack.style.setProperty('--rx', `${rx.toFixed(3)}deg`)
-    stack.style.setProperty('--ry', `${ry.toFixed(3)}deg`)
-    if (Math.abs(targetRx - rx) + Math.abs(targetRy - ry) > 0.01) {
-      rafId = requestAnimationFrame(tick)
-    } else {
-      running = false
-    }
-  }
-
-  const start = () => {
-    if (!running) {
-      running = true
-      rafId = requestAnimationFrame(tick)
-    }
-  }
-
-  // Track the pointer across the whole section so the logo feels aware of the
-  // cursor before it's directly over the artwork.
-  const zone = scene.closest('section') || scene
-  zone.addEventListener(
-    'pointermove',
-    (e) => {
-      const rect = scene.getBoundingClientRect()
-      const px = ((e as PointerEvent).clientX - (rect.left + rect.width / 2)) / rect.width
-      const py = ((e as PointerEvent).clientY - (rect.top + rect.height / 2)) / rect.height
-      targetRy = Math.max(-1, Math.min(1, px)) * MAX_TILT
-      targetRx = Math.max(-1, Math.min(1, -py)) * MAX_TILT
-      start()
-    },
-    { passive: true }
-  )
-  zone.addEventListener('pointerleave', () => {
-    targetRx = 0
-    targetRy = 0
-    start()
   })
 }
 

@@ -1,41 +1,66 @@
 import * as THREE from 'three'
 
 // ---------------------------------------------------------------------------
-// Orion constellation — normalized 2D star chart (x right, y up).
-// The full classical figure: the seven canonical bright stars plus Meissa
-// (the head), the raised club above Betelgeuse, the shield arc beyond
-// Bellatrix, and the sword hanging from the belt.
+// Orion constellation — real J2000 star positions (RA in decimal hours, Dec
+// in decimal degrees), flat-projected onto the 2D chart the scene uses:
+//   x = -(RA − 5.6h) · 15°/h   (mirrored: east is left, as seen from Earth)
+//   y = Dec
+// then uniformly normalized below to the scene units the hero has always
+// used (y ∈ [-3, 3]) with the sky's true aspect ratio preserved — nearly
+// horizontal belt, wide shoulders and feet, figure taller than it is wide.
+// `mag` is apparent visual magnitude.
 // ---------------------------------------------------------------------------
-const ORION_STARS: { name: string; x: number; y: number; mag: number }[] = [
-  // Torso
-  { name: 'Betelgeuse', x: -1.35, y: 1.45, mag: 1.0 },
-  { name: 'Meissa', x: -0.3, y: 2.15, mag: 0.55 },
-  { name: 'Bellatrix', x: 0.95, y: 1.35, mag: 0.75 },
-  { name: 'Alnitak', x: -0.45, y: -0.05, mag: 0.8 },
-  { name: 'Alnilam', x: 0.0, y: 0.1, mag: 0.85 },
-  { name: 'Mintaka', x: 0.45, y: 0.22, mag: 0.75 },
-  { name: 'Saiph', x: -0.95, y: -1.75, mag: 0.7 },
-  { name: 'Rigel', x: 1.1, y: -1.65, mag: 1.0 },
+const ORION_CATALOG: { name: string; ra: number; dec: number; mag: number }[] = [
+  // Shoulders + head
+  { name: 'Betelgeuse', ra: 5.919, dec: 7.407, mag: 0.42 },
+  { name: 'Meissa', ra: 5.585, dec: 9.934, mag: 3.47 },
+  { name: 'Bellatrix', ra: 5.419, dec: 6.35, mag: 1.64 },
+  // Belt
+  { name: 'Alnitak', ra: 5.679, dec: -1.943, mag: 1.77 },
+  { name: 'Alnilam', ra: 5.603, dec: -1.202, mag: 1.69 },
+  { name: 'Mintaka', ra: 5.533, dec: -0.299, mag: 2.23 },
+  // Feet
+  { name: 'Saiph', ra: 5.796, dec: -9.67, mag: 2.09 },
+  { name: 'Rigel', ra: 5.242, dec: -8.202, mag: 0.13 },
   // Raised arm + club
-  { name: 'Mu Ori', x: -1.78, y: 1.82, mag: 0.4 },
-  { name: 'Nu Ori', x: -1.98, y: 2.42, mag: 0.35 },
-  { name: 'Xi Ori', x: -1.6, y: 2.55, mag: 0.35 },
-  { name: 'Chi1 Ori', x: -1.85, y: 3.0, mag: 0.3 },
-  { name: 'Chi2 Ori', x: -1.45, y: 3.05, mag: 0.32 },
-  // Shield / bow arc
-  { name: 'Omicron1 Ori', x: 1.72, y: 2.28, mag: 0.3 },
-  { name: 'Omicron2 Ori', x: 1.92, y: 2.02, mag: 0.32 },
-  { name: 'Pi1 Ori', x: 2.2, y: 1.68, mag: 0.32 },
-  { name: 'Pi2 Ori', x: 2.36, y: 1.28, mag: 0.35 },
-  { name: 'Pi3 Ori', x: 2.45, y: 0.85, mag: 0.5 },
-  { name: 'Pi4 Ori', x: 2.4, y: 0.4, mag: 0.42 },
-  { name: 'Pi5 Ori', x: 2.3, y: -0.15, mag: 0.42 },
-  { name: 'Pi6 Ori', x: 2.08, y: -0.65, mag: 0.32 },
+  { name: 'Mu Ori', ra: 6.038, dec: 9.647, mag: 4.12 },
+  { name: 'Nu Ori', ra: 6.126, dec: 14.768, mag: 4.42 },
+  { name: 'Xi Ori', ra: 6.199, dec: 14.209, mag: 4.45 },
+  { name: 'Chi1 Ori', ra: 5.907, dec: 20.276, mag: 4.41 },
+  { name: 'Chi2 Ori', ra: 6.065, dec: 20.138, mag: 4.63 },
+  // Shield / bow arc (west of the figure)
+  { name: 'Pi1 Ori', ra: 4.918, dec: 10.151, mag: 4.65 },
+  { name: 'Pi2 Ori', ra: 4.844, dec: 8.9, mag: 4.36 },
+  { name: 'Pi3 Ori', ra: 4.831, dec: 6.961, mag: 3.19 },
+  { name: 'Pi4 Ori', ra: 4.858, dec: 5.605, mag: 3.69 },
+  { name: 'Pi5 Ori', ra: 4.91, dec: 2.441, mag: 3.72 },
+  { name: 'Pi6 Ori', ra: 4.976, dec: 1.714, mag: 4.47 },
   // Sword
-  { name: '42 Ori', x: -0.2, y: -0.52, mag: 0.35 },
-  { name: 'Trapezium', x: -0.26, y: -0.78, mag: 0.5 },
-  { name: 'Iota Ori', x: -0.32, y: -1.05, mag: 0.45 },
+  { name: '42 Ori', ra: 5.588, dec: -4.838, mag: 4.59 },
+  { name: 'Theta1 Ori', ra: 5.588, dec: -5.39, mag: 6.73 },
+  { name: 'Iota Ori', ra: 5.591, dec: -5.91, mag: 2.77 },
+  // Knee — links the belt down to Rigel
+  { name: 'Eta Ori', ra: 5.408, dec: -2.397, mag: 3.36 },
 ]
+
+const projected = ORION_CATALOG.map((s) => ({ x: -(s.ra - 5.6) * 15, y: s.dec }))
+const minX = Math.min(...projected.map((p) => p.x))
+const maxX = Math.max(...projected.map((p) => p.x))
+const minY = Math.min(...projected.map((p) => p.y))
+const maxY = Math.max(...projected.map((p) => p.y))
+// Uniform scale — one factor for both axes so the sky's proportions survive
+const NORM = 6 / Math.max(maxX - minX, maxY - minY)
+
+const ORION_STARS: { name: string; x: number; y: number; mag: number }[] = ORION_CATALOG.map(
+  (s, i) => ({
+    name: s.name,
+    x: (projected[i].x - (minX + maxX) / 2) * NORM,
+    y: (projected[i].y - (minY + maxY) / 2) * NORM,
+    // Apparent magnitude → render weight (brighter = bigger); the floor keeps
+    // the faint club/shield stars legible against the ambient field
+    mag: Math.min(1, Math.max(0.28, 1.05 - 0.165 * s.mag)),
+  })
+)
 
 // Index pairs into ORION_STARS forming the complete classical depiction
 const ORION_LINES: [number, number][] = [
@@ -50,7 +75,8 @@ const ORION_LINES: [number, number][] = [
   [4, 5], // Alnilam — Mintaka
   // Legs
   [3, 6], // Alnitak — Saiph
-  [5, 7], // Mintaka — Rigel
+  [5, 22], // Mintaka — Eta
+  [22, 7], // Eta — Rigel
   // Raised arm + club (forks at Mu, closes at the top)
   [0, 8], // Betelgeuse — Mu
   [8, 9], // Mu — Nu
@@ -59,18 +85,16 @@ const ORION_LINES: [number, number][] = [
   [10, 12], // Xi — Chi2
   [11, 12], // Chi1 — Chi2
   // Shield arm + shield arc
-  [2, 17], // Bellatrix — Pi3
-  [13, 14], // Omicron1 — Omicron2
-  [14, 15], // Omicron2 — Pi1
-  [15, 16], // Pi1 — Pi2
-  [16, 17], // Pi2 — Pi3
-  [17, 18], // Pi3 — Pi4
-  [18, 19], // Pi4 — Pi5
-  [19, 20], // Pi5 — Pi6
+  [2, 15], // Bellatrix — Pi3
+  [13, 14], // Pi1 — Pi2
+  [14, 15], // Pi2 — Pi3
+  [15, 16], // Pi3 — Pi4
+  [16, 17], // Pi4 — Pi5
+  [17, 18], // Pi5 — Pi6
   // Sword hanging from the belt
-  [4, 21], // Alnilam — 42 Ori
-  [21, 22], // 42 Ori — Trapezium
-  [22, 23], // Trapezium — Iota
+  [4, 19], // Alnilam — 42 Ori
+  [19, 20], // 42 Ori — Theta1 (Trapezium)
+  [20, 21], // Theta1 — Iota
 ]
 
 
@@ -274,7 +298,7 @@ export function initHero() {
   // Constellation targets — right of center on wide screens so the headline
   // breathes; centered (and smaller) on narrow screens where that space
   // doesn't exist.
-  // Full figure spans roughly x ∈ [-2, 2.45], y ∈ [-1.75, 3.05] — scaled so
+  // Full figure spans roughly x ∈ [-2.05, 2.05], y ∈ [-3, 3] — scaled so
   // the club and shield stay inside the frustum at z = -1.5.
   const narrow = camera.aspect < 1
   const CONSTELLATION_SCALE = narrow ? 0.85 : 1.35
