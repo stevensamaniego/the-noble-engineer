@@ -22,8 +22,9 @@ export function initAnimations() {
   }
 
   const lenis = initSmoothScroll()
-  // Hero entrance waits for the circuit-trace preloader to start its reveal
-  // (resolves immediately when the preloader is skipped)
+  // Hero entrance waits for the preloader's 'preloader-done' moment — the
+  // promise resolves exactly when that event fires (immediately on skip),
+  // with no listener race if the preloader finished before we got here.
   preloaderDone.then(initLoadSequence)
   initHeadingReveals()
   initSectionReveals()

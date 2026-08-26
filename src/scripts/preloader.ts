@@ -1,20 +1,25 @@
 import gsap from 'gsap'
 
 // ---------------------------------------------------------------------------
-// Circuit-trace preloader — the TNE tree draws itself like a signal racing
-// through a PCB: trunk first, branches forking outward with organic stagger,
-// nodes pulsing as the signal arrives, then the figure, wordmark, and a
-// one-shot brightness pulse before the veil lifts.
+// Circuit-tree preloader — a tree routed like PCB traces draws itself as one
+// signal propagating up from the trunk. Timing is declarative in the markup:
+// each trace/pad carries data-t (its start offset in seconds), derived so a
+// branch begins the instant the parent trace's signal passes its fork. Traces
+// draw at a constant px/s with a linear ease, so the whole tree reads as
+// electricity flowing through a board rather than choreographed tweens.
 //
 // The hero Three.js scene boots underneath from t=0 (hero.ts is untouched),
-// so the constellation is already mostly formed when the preloader fades.
+// so the constellation is already formed when the veil lifts at ~2s.
 // ---------------------------------------------------------------------------
 
 const VISITED_KEY = 'tne-visited'
+const SIGNAL_SPEED = 180 // px per second along branch traces (trunk sets data-dur)
+const REVEAL_AT = 2.02 // when the veil starts lifting
+const FADE_DURATION = 0.5
 
-// Resolves the moment the reveal begins (or immediately when the preloader is
-// skipped). animations.ts gates the hero load sequence on this promise so the
-// nav/eyebrow/logo entrance plays against a visible page, not behind the veil.
+// Resolves the moment 'preloader-done' fires (or immediately when the
+// preloader is skipped). animations.ts gates the hero load sequence on this
+// promise — same semantics as the event, without a listener race.
 let resolveDone: (() => void) | null = null
 export const preloaderDone = new Promise<void>((resolve) => {
   resolveDone = resolve
@@ -22,6 +27,7 @@ export const preloaderDone = new Promise<void>((resolve) => {
 
 export function initPreloader() {
   const done = () => {
+    window.dispatchEvent(new CustomEvent('preloader-done'))
     resolveDone?.()
     resolveDone = null
   }
@@ -51,7 +57,7 @@ export function initPreloader() {
     return
   }
 
-  const svg = root.querySelector<SVGSVGElement>('#circuit-logo')
+  const svg = root.querySelector<SVGSVGElement>('#circuit-tree')
   const emblem = document.getElementById('preloader-emblem')
   if (!svg || !emblem) {
     skip()
@@ -71,24 +77,9 @@ export function initPreloader() {
 
 // ---------------------------------------------------------------------------
 function play(root: HTMLElement, svg: SVGSVGElement, emblem: HTMLElement, done: () => void) {
-  const trunk = svg.querySelector<SVGGeometryElement>('.pl-trunk')!
-  const branches = Array.from(svg.querySelectorAll<SVGGElement>('.pl-branch'))
-  const junctions = Array.from(svg.querySelectorAll<SVGCircleElement>('.pl-junction'))
-  const traces = Array.from(svg.querySelectorAll<SVGGeometryElement>('.pl-trace'))
-  const rules = Array.from(svg.querySelectorAll<SVGGeometryElement>('.pl-rule'))
-  const figure = svg.querySelector('.pl-figure')
-  const wordmark = svg.querySelector('.pl-wordmark')
-
-  // Prime a stroke for dash-drawing and flip it visible (CSS hides all
-  // drawable strokes until JS takes over, so the first paint is pure void)
-  const prep = (el: SVGGeometryElement) => {
-    const len = el.getTotalLength()
-    gsap.set(el, { visibility: 'visible', strokeDasharray: len, strokeDashoffset: len })
-    return len
-  }
-
-  gsap.set(svg.querySelectorAll('.pl-node'), { scale: 0, transformOrigin: '50% 50%' })
-  gsap.set(emblem, { filter: 'brightness(1)' })
+  const traces = Array.from(svg.querySelectorAll<SVGGeometryElement>('.pl-draw'))
+  const nodes = Array.from(svg.querySelectorAll<SVGGraphicsElement>('.pl-node'))
+  const word = document.getElementById('preloader-word')
 
   const reveal = () => {
     try {
@@ -98,82 +89,45 @@ function play(root: HTMLElement, svg: SVGSVGElement, emblem: HTMLElement, done: 
     }
     document.body.style.overflow = ''
     done() // hero entrance starts underneath as the veil dissolves
-    gsap.to(svg, { scale: 1.04, duration: 0.7, ease: 'power2.in' })
     gsap.to(root, {
       autoAlpha: 0,
-      duration: 0.7,
+      duration: FADE_DURATION,
       ease: 'power2.inOut',
       onComplete: () => root.remove(),
     })
   }
 
-  const tl = gsap.timeline({ onComplete: reveal })
+  const tl = gsap.timeline()
 
-  // --- 1. Trunk — the first signal, racing bottom → top --------------------
-  prep(trunk)
-  tl.to(trunk, { strokeDashoffset: 0, duration: 0.85, ease: 'power2.inOut' }, 0.18)
-
-  // Junction nodes pop as the signal passes each fork point
-  tl.to(
-    junctions,
-    { opacity: 1, scale: 1, duration: 0.3, stagger: 0.13, ease: 'back.out(3)' },
-    0.5
-  )
-
-  // --- 2. Branches fork outward, bottom pair first ---------------------------
-  branches.forEach((branch, i) => {
-    const t0 = 0.46 + i * 0.12
-    const strokes = Array.from(branch.querySelectorAll<SVGGeometryElement>('path, line'))
-    strokes.forEach((stroke, j) => {
-      const len = prep(stroke)
-      tl.to(
-        stroke,
-        // Longer branches take longer — organic, not metronomic
-        { strokeDashoffset: 0, duration: Math.min(0.65, 0.28 + len / 420), ease: 'power2.out' },
-        t0 + j * 0.22
-      )
-    })
-    tl.to(
-      branch.querySelectorAll('.pl-node'),
-      { opacity: 1, scale: 1, duration: 0.35, stagger: 0.1, ease: 'back.out(2.8)' },
-      t0 + 0.42
-    )
+  // --- 1–2. Traces — constant signal speed, branches fork off mid-draw ------
+  traces.forEach((el) => {
+    const len = el.getTotalLength()
+    const t = parseFloat(el.dataset.t || '0')
+    const dur = el.dataset.dur ? parseFloat(el.dataset.dur) : len / SIGNAL_SPEED
+    gsap.set(el, { visibility: 'visible', strokeDasharray: len, strokeDashoffset: len })
+    tl.to(el, { strokeDashoffset: 0, duration: dur, ease: 'none' }, t)
   })
 
-  // --- 3. Circuit traces run off-screen — the tree joins a larger board ----
-  traces.forEach((trace, i) => {
-    prep(trace)
-    tl.to(
-      trace,
-      { strokeDashoffset: 0, duration: 0.55, ease: 'power1.out' },
-      1.5 + i * 0.07
-    )
+  // --- 3. Pads — junctions pop as the signal passes, terminals as it lands --
+  nodes.forEach((el) => {
+    const t = parseFloat(el.dataset.t || '0')
+    gsap.set(el, { scale: 0, transformOrigin: '50% 50%' })
+    tl.to(el, { opacity: 1, scale: 1, duration: 0.32, ease: 'back.out(3.5)' }, t)
   })
 
-  // --- 4. Figure, baseline rules, wordmark ----------------------------------
-  if (figure) tl.to(figure, { opacity: 0.92, duration: 0.6, ease: 'power2.out' }, 1.6)
+  // --- 4. Hold — one soft power pulse through the finished board ------------
+  tl.to(emblem, { filter: 'brightness(1.22)', duration: 0.16, ease: 'power2.in' }, 1.72)
+  tl.to(emblem, { filter: 'brightness(1)', duration: 0.4, ease: 'power2.out' }, 1.88)
 
-  rules.forEach((rule) => {
-    prep(rule)
-    tl.to(rule, { strokeDashoffset: 0, duration: 0.45, ease: 'power2.out' }, 1.62)
-  })
-
-  if (wordmark) {
+  if (word) {
     tl.fromTo(
-      wordmark,
-      { opacity: 0, letterSpacing: '0.5em' },
-      { opacity: 1, letterSpacing: '0.32em', duration: 0.6, ease: 'power2.out' },
-      1.8
+      word,
+      { opacity: 0, y: 6 },
+      { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' },
+      1.78
     )
   }
 
-  // --- 5. Power surge — one brightness pulse through the whole board --------
-  tl.to(
-    emblem,
-    { filter: 'brightness(1.35)', duration: 0.22, ease: 'power2.in', yoyo: true, repeat: 1 },
-    2.05
-  )
-
-  // --- 6. Hold the finished mark, then reveal (via onComplete) --------------
-  tl.to({}, { duration: 0.4 }, 2.5)
+  // --- 5. Reveal — the veil lifts while the pulse settles beneath it --------
+  tl.call(reveal, [], REVEAL_AT)
 }
